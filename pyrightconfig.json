@@ -1,0 +1,35 @@
+{
+	"executionEnvironments": [
+		{
+			"root": "src"
+		}
+	],
+	"exclude": [
+		"**/node_modules",
+		"**/__pycache__"
+	],
+	"ignore": [
+		"**/node_modules",
+		"**/__pycache__"
+	],
+	"include": [
+		"**/*.py"
+	],
+	"pythonPlatform": "Linux",
+	"pythonVersion": "3.9",
+	"reportMissingImports": true,
+	"reportMissingTypeStubs": false,
+	"stubPath": "./stubs",
+	"typeCheckingMode": "strict",
+	"venvPath": "./venv",
+	"venv": "my_project_venv",
+	"reportUnusedImport": true,
+	"reportUnusedVariable": true,
+	"reportOptionalMemberAccess": true,
+	"reportOptionalSubscript": true,
+	"reportOptionalCall": true,
+	"reportOptionalIterable": true,
+	"reportOptionalContextManager": true,
+	"reportOptionalOperand": true,
+	"reportUnnecessaryTypeIgnoreComment": true,
+}

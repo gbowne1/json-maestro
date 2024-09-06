@@ -1,0 +1,6 @@
+black
+flake8
+pytest
+pylint
+pycache
+pyright

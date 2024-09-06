@@ -1,0 +1,24 @@
+{
+	"fruits": [
+		"apple",
+		"banana",
+		"orange"
+	],
+	"colors": [
+		"red",
+		"green",
+		"blue"
+	],
+	"colors": [
+		"red",
+		"green",
+		"blue"
+	],
+	"numbers": [
+		1,
+		2,
+		3,
+		4,
+		5
+	]
+}

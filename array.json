@@ -1,0 +1,16 @@
+[
+	"value1",
+	456,
+	true,
+	{
+		"nestedKey": "nestedValue"
+	}
+],
+[
+	"value2",
+	459,
+	true,
+	{
+		"nestedKey": "nestedValue"
+	}
+]

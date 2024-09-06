@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Alice",
+    "json.schemas": [],
+    "city": "New York",
+    "age": 30
+  },
+  {
+    "name": "Bob",
+    "json.schemas": [],
+    "city": "Los Angeles",
+    "age": 25
+  },
+  {
+    "name": "Charlie",
+    "json.schemas": [],
+    "city": "Chicago",
+    "age": 35
+  },
+  {
+    "name": "Charlie",
+    "json.schemas": [],
+    "city": "Chicago",
+    "age": 35
+  }
+]

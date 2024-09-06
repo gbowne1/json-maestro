@@ -1,0 +1,34 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name":"Launch",
+			"type": "debugpy",
+			"request": "launch",
+			"program": "${workspaceFolder}/",
+			"cwd": "${workspaceFolder}",
+			"python": "/usr/bin/python3",
+			"pythonArgs": [],
+			"justMyCode": false,
+			"showReturnValue": true,
+			"autoReload": {},
+			"redirectOutput": true,
+			"presentation": {
+				"hidden": false,
+				"group": "",
+				"order": 1
+			},
+			"serverReadyAction":{
+				"action": "startDebugging",
+				"name": "<launch browser config name>",
+				"killOnServerStop": false
+			},
+			"postDebugTask": "",
+			"envFile": "${workspaceFolder}/.env",
+			"consoleName": "Python Debug Console"
+		},
+	]
+}
