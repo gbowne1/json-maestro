@@ -1,20 +1,19 @@
 {
-  "numbers": [
-    1,
-    2,
-    3,
-    4,
-    5
-  ],
-  "json.schemas": [],
-  "fruits": [
-    "apple",
-    "banana",
-    "orange"
-  ],
-  "colors": [
-    "red",
-    "green",
-    "blue"
-  ]
+	"fruits": [
+		"apple",
+		"banana",
+		"orange"
+	],
+	"colors": [
+		"red",
+		"green",
+		"blue"
+	],
+	"numbers": [
+		1,
+		2,
+		3,
+		4,
+		5
+	]
 }

@@ -5,12 +5,4 @@
 	{
 		"nestedKey": "nestedValue"
 	}
-],
-[
-	"value2",
-	459,
-	true,
-	{
-		"nestedKey": "nestedValue"
-	}
 ]
