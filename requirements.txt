@@ -4,3 +4,5 @@ pytest
 pylint
 pycache
 pyright
+pylance
+debugpy
