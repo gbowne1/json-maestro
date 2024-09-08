@@ -2,12 +2,9 @@ import json
 import os
 import sys
 import re
-from typing import Union, List, Dict, Any, cast, TypeVar, Set, TYPE_CHECKING
+from typing import Union, List, Dict, Any, cast, TypeVar, Set
 
-T = TypeVar('T')
-
-if TYPE_CHECKING:
-    from typing_extensions import Literal
+T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 
 def load_jsonc(file_path: str) -> Dict[str, Any]:
     """Load JSONC from a file, skipping comments starting with // and handling control characters."""
@@ -68,7 +65,7 @@ def remove_comments(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[st
     else:
         return obj
 
-def remove_duplicate_keys(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[str, Any], List[Any]]:
+def remove_duplicate_keys(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[str, Any], List[Any], Any]:
     """
     Recursively remove duplicate keys from a nested object.
 
@@ -78,21 +75,20 @@ def remove_duplicate_keys(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[D
     Returns:
     A dictionary, list, or any other object with duplicate keys removed.
     """
-    def _remove_duplicates_helper(obj: Union[Dict[str, Any], List[Any]]) -> Union[Dict[str, Any], List[Any]]:
-        if isinstance(obj, dict):
-            new_obj: Dict[str, Any] = {}  # Explicitly declare the type
-            seen_keys: Set[str] = set()  # Explicitly declare the type
-            for key, value in obj.items():
-                if key not in seen_keys:
-                    seen_keys.add(key)
-                    new_obj[key] = _remove_duplicates_helper(value)
-            return new_obj
-        elif isinstance(obj, list):
-            return [_remove_duplicates_helper(item) for item in obj]
-        else:
-            return obj
+    if isinstance(obj, dict):
+        new_obj: Dict[str, Any] = {}
+        seen_keys: Set[str] = set()
+        for key, value in obj.items():
+            if key not in seen_keys:
+                seen_keys.add(key)
+                new_obj[key] = remove_duplicate_keys(value)
+        return new_obj
+    elif isinstance(obj, list):
+        return [remove_duplicate_keys(item) for item in obj]
+    else:
+        return obj
 
-    return _remove_duplicates_helper(obj)
+from typing import TypeVar, Dict, List, Any, Union
 
 def add_schema_keys(obj: T) -> T:
     """
@@ -105,17 +101,19 @@ def add_schema_keys(obj: T) -> T:
     The processed object with schema-related keys added.
     """
     if isinstance(obj, dict):
-        if "json.schemas" not in obj:
-            obj["json.schemas"] = []
-        for key, value in obj.items():
+        obj_dict: Dict[str, Any] = obj
+        if "json.schemas" not in obj_dict:
+            obj_dict["json.schemas"] = []
+        for key, value in obj_dict.items():
             if isinstance(value, list) and key.startswith("json.schemas"):
-                for item in value:
-                    if "fileMatch" not in item:
-                        item["fileMatch"] = []
-                    if "url" not in item:
-                        item["url"] = ""
+                schema_list: List[Dict[str, Any]] = value
+                for schema_item in schema_list:
+                    if isinstance(schema_item, dict):
+                        schema_item.setdefault("fileMatch", [])
+                        schema_item.setdefault("url", "")
     elif isinstance(obj, list):
-        for item in obj:
+        obj_list: List[Any] = obj
+        for item in obj_list:
             add_schema_keys(item)
     return obj
 
@@ -130,20 +128,16 @@ def sort_json_keys(obj: T, reverse: bool = False) -> T:
     Returns:
     The processed object with sorted keys.
     """
-    def _sort_dict_items(items: Dict[str, T]) -> Dict[str, T]:
-        return dict(sorted(items.items(), key=lambda x: x[0], reverse=reverse))
-
     if isinstance(obj, dict):
-        if not obj:
-            return obj  # Handle empty dictionaries
-
-        return {k: sort_json_keys(v, reverse) for k, v in _sort_dict_items(obj)}
+        sorted_dict = {k: sort_json_keys(v, reverse) for k, v in sorted(obj.items(), key=lambda x: x[0], reverse=reverse)}
+        return cast(T, sorted_dict)
     elif isinstance(obj, list):
-        return [sort_json_keys(item, reverse) for item in obj]
+        sorted_list = [sort_json_keys(item, reverse) for item in obj]
+        return cast(T, sorted_list)
     else:
         return obj
 
-def save_json(data: Union[dict, list, str, int, float, bool], file_path: str):
+def save_json(data: Union[Dict[str, Any], List[Any], str, int, float, bool], file_path: str) -> None:
     """
     Save JSON data to a file.
 

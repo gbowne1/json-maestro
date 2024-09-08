@@ -2,7 +2,7 @@ import pytest
 import json
 import os
 import tempfile
-from duplicatejsonkey import load_jsonc, load_vscode_settings, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys
+from jsonmaestro import load_jsonc, load_vscode_settings, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys
 
 # Helper function to create temporary JSON files for testing
 def create_temp_json(tmp_path, content):
