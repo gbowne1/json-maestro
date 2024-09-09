@@ -88,8 +88,6 @@ def remove_duplicate_keys(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[D
     else:
         return obj
 
-from typing import TypeVar, Dict, List, Any, Union
-
 def add_schema_keys(obj: T) -> T:
     """
     Add schema-related keys to the object.
