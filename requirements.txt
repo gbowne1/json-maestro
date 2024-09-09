@@ -1,8 +1,9 @@
 black
 flake8
 pytest
+pytest-cov
+pytest-mock
 pylint
-pycache
 pyright
 pylance
 debugpy

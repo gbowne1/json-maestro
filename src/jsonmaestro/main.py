@@ -207,6 +207,3 @@ def main():
 
     print(f"Successfully processed {input_file}")
     print(f"Cleaned data saved to {output_file}")
-
-if __name__ == "__main__":
-    main()
