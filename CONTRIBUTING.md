@@ -26,36 +26,26 @@ This section guides you through submitting an enhancement suggestion for JSONMae
 
 ### Pull Requests
 
-- Fill in the required template
-- Do not include issue numbers in the PR title
-- Include screenshots and animated GIFs in your pull request whenever possible.
-- Follow the Python styleguides.
+- Do not include issue numbers in the PR title.
+- Include screenshots, short videos of your bugs, issue, working changes, features, etc. whenever possible.
+- Follow the Python 3 styleguides at <https://www.python.org/doc/essays/styleguide/>
 - Include thoughtfully-worded, well-structured tests.
-- Document new code based on the Documentation Styleguide
-- End all files with a newline
-
-## Styleguides
+- Document new code based on the Documentation  <https://realpython.com/documenting-python-code/>
+- End all files with a newline.
+- If there are no tests that cover your change(s) and can produce test code or show passing tests please do so. We primarily use Pytest.
 
 ### Git Commit Messages
 
 - Use the present tense ("Add feature" not "Added feature")
 - Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
-- Reference issues and pull requests liberally after the first line
-
-### Python Styleguide
-
-All Python code must adhere to [PEP 8](https://www.python.org/dev/peps/pep-0008/).
-
-### Documentation Styleguide
-
-- Use [Markdown](https://daringfireball.net/projects/markdown).
+- Limit the first line to 50 characters or less
 
 ## Additional Notes
 
 ### Issue and Pull Request Labels
 
 This section lists the labels we use to help us track and manage issues and pull requests.
+Please include a label with your PR if you are able to add a label in the GitHub UI
 
 - `bug` - Issues that are bugs.
 - `enhancement` - Issues that are feature requests.

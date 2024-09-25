@@ -8,6 +8,7 @@
 JSONMaestro is a powerful Python tool designed to clean, process, and optimize JSON-like files. It handles various operations such as removing comments, eliminating duplicates, adding schema keys, and sorting keys. This utility is particularly useful for developers working with configuration files, API responses, or any JSON-structured data that needs refinement.
 
 Key features:
+
 - Supports JSON, JSONC, and VSCode settings.json files
 - Removes duplicate keys and comments
 - Adds schema keys for improved structure
@@ -23,6 +24,8 @@ JSONMaestro streamlines the process of preparing JSON data for further analysis 
 ## Contributing
 
 See <CONTRIBUTING.md>
+
+If you would like to work on issues and new features, we welcome your issues and Pull Requests.
 
 ## License
 
