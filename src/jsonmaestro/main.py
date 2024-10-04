@@ -7,7 +7,8 @@ import click
 
 @click.command()
 @click.option("-i","--interactive", default=None, help="Run jsonmaestro in inteactive, defults to this if no other arguments were provided")
-def main(interactive: bool):
+@click.option("-d","--debug",default=False,help="Run jsonmaestro in debug mode, enable debug printing")
+def main(interactive: bool, debug: bool):
 	input_file = input("Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
 
 	if not os.path.exists(input_file):
@@ -29,31 +30,31 @@ def main(interactive: bool):
 
 	# Remove comments if requested
 	if input("Do you want to remove comments? (y/n): ").lower() == 'y':
-		if __debug__:
+		if debug:
 			print("[DEBUG]: remove_comments = y")
 		cleaned_data = remove_comments(cleaned_data)
 	else:
-		if __debug__:
+		if debug:
 			print("[DEBUG]: remove_comments = n")
 
 	# Sort the keys
 	if input("Do you want to sort keys? (y/n): ").lower() == 'y':
-		if __debug__:
+		if debug:
 			print("[DEBUG]: sort_keys = y")
 
 		sort_method = input("Do you want to sort in ascending (a) or descending (d)? ").lower()
 		if sort_method == 'a':
-			if __debug__:
+			if debug:
 				print("[DEBUG]: order = a")
 
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
 		elif sort_method == 'd':
-			if __debug__:
+			if debug:
 				print("[DEBUG]: order = d")
 
 			cleaned_data = sort_json_keys(cleaned_data, reverse=True)
 		else:
-			if __debug__:
+			if debug:
 				print("[DEBUG]: order = {sort_method}")
 			print("Invalid choice. Defaulting to ascending order.")
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
