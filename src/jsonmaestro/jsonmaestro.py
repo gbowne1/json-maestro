@@ -105,7 +105,6 @@ def add_schema_keys(obj: T) -> T:
             if isinstance(value, list) and key.startswith("json.schemas"):
                 schema_list: List[Dict[str, Any]] = value
                 for schema_item in schema_list:
-                    if isinstance(schema_item, dict):
                         schema_item.setdefault("fileMatch", [])
                         schema_item.setdefault("url", "")
     elif isinstance(obj, list):
