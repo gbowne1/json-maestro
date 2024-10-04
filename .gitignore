@@ -141,6 +141,7 @@ cython_debug/
 
 # VS Code
 .vscode/
+!data/.vscode/
 
 # Specific to your project
 .pytest_cache/
