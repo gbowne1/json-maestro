@@ -14,7 +14,7 @@ setup(
     description='JSONMaestro is a powerful tool designed for cleaning and processing JSON-like files. It simplifies tasks such as removing comments, eliminating duplicate keys, adding schema keys, and sorting keys. Ideal for developers working with configuration files and API responses, JSONMaestro enhances data integrity and prepares JSON data for further analysis',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
-    url='https://github.com/yourusername/my_module',
+    url='https://github.com/gbowne1/json-maestro',
     classifiers=[
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
