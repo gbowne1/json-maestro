@@ -20,29 +20,25 @@ def main():
 
 
 	# Process the data
-	try:
-		cleaned_data = remove_duplicate_keys(original_data)
-		cleaned_data = add_schema_keys(cleaned_data)
+	cleaned_data = remove_duplicate_keys(original_data)
+	cleaned_data = add_schema_keys(cleaned_data)
 
-		# Remove comments if requested
-		remove_comments_option = input("Do you want to remove comments? (y/n): ").lower()
-		if remove_comments_option == 'y':
-			cleaned_data = remove_comments(cleaned_data)
+	# Remove comments if requested
+	remove_comments_option = input("Do you want to remove comments? (y/n): ").lower()
+	if remove_comments_option == 'y':
+		cleaned_data = remove_comments(cleaned_data)
 
-		# Sort the keys
-		sort_order = input("Do you want to sort keys? (y/n): ").lower()
-		if sort_order == 'y':
-			sort_method = input("Do you want to sort in ascending (a) or descending (d)? ").lower()
-			if sort_method == 'a':
-				cleaned_data = sort_json_keys(cleaned_data, reverse=False)
-			elif sort_method == 'd':
-				cleaned_data = sort_json_keys(cleaned_data, reverse=True)
-			else:
-				print("Invalid choice. Defaulting to ascending order.")
-				cleaned_data = sort_json_keys(cleaned_data, reverse=False)
-	except Exception as e:
-		print(f"Failed to process data. Error: {str(e)}")
-		sys.exit(1)
+	# Sort the keys
+	sort_order = input("Do you want to sort keys? (y/n): ").lower()
+	if sort_order == 'y':
+		sort_method = input("Do you want to sort in ascending (a) or descending (d)? ").lower()
+		if sort_method == 'a':
+			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
+		elif sort_method == 'd':
+			cleaned_data = sort_json_keys(cleaned_data, reverse=True)
+		else:
+			print("Invalid choice. Defaulting to ascending order.")
+			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
 
 	# Save the cleaned data to the output file
 	output_file = f"{os.path.splitext(input_file)[0]}_clean{os.path.splitext(input_file)[1]}"
