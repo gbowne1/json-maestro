@@ -20,9 +20,6 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 			# Parse the remaining content as JSON
 			return json.loads(content)
 
-	except FileNotFoundError:
-		print(f"Error: File '{file_path}' not found.")
-		sys.exit(1)
 	except json.JSONDecodeError as e:
 		print(f"Error: Invalid JSON format in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
@@ -38,9 +35,6 @@ def load_json(file_path: str)-> Dict[str, Any]:
 		with open(file_path, 'r', encoding='utf-8') as file:
 			content = file.read()
 			return json.loads(content)
-	except FileNotFoundError:
-		print(f"Error: File '{file_path}' not found.")
-		sys.exit(1)
 	except json.JSONDecodeError as e:
 		print(f"Error: Invalid JSON format in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
