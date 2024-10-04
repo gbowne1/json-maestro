@@ -5,18 +5,17 @@ import os
 def main():
 	input_file = input("Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
 
+	if not os.path.exists(input_file):
+		print(f"[ERROR] filepath {input_file} does not exists")
+		sys.exit(1)
 	# Check if it's a VSCode settings.json file
 	if input_file.endswith('.json'):
 		load_function = load_vscode_settings
 	else:
 		load_function = load_jsonc
 
-	# Load the input file
-	try:
-		original_data = load_function(input_file)
-	except Exception as e:
-		print(f"Failed to load input file. Error: {str(e)}")
-		sys.exit(1)
+	original_data = load_function(input_file)
+
 
 	# Process the data
 	try:
