@@ -2,8 +2,12 @@ from jsonmaestro.jsonmaestro import load_json, load_jsonc,remove_comments,remove
 import jsonmaestro.helpers as helpers
 import sys
 import os
+import click
 
-def main():
+
+@click.command()
+@click.option("-i","--interactive", default=None, help="Run jsonmaestro in inteactive, defults to this if no other arguments were provided")
+def main(interactive: bool):
 	input_file = input("Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
 
 	if not os.path.exists(input_file):
