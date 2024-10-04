@@ -1,3 +1,4 @@
+from typing import Any, Dict, List, Union
 from jsonmaestro.jsonmaestro import load_json, load_jsonc,remove_comments,remove_duplicate_keys,add_schema_keys, sort_json_keys,save_json
 import jsonmaestro.helpers as helpers
 import sys
@@ -69,9 +70,9 @@ def interactive_mode(debug: bool):
 
 
 @click.command()
-@click.option("-f","--files", required=False)
+@click.option("-f", "--files", multiple=True, required=False, default=())
 @click.option(
-	"-c",
+ "-c",
     "--clean",
     is_flag=True,
     required=False,
@@ -80,7 +81,7 @@ def interactive_mode(debug: bool):
     help="Remove comments from json file"
 )
 @click.option(
-	"-s",
+ "-s",
     "--sort",
     required=False,
     default="a",
@@ -98,25 +99,59 @@ def interactive_mode(debug: bool):
     "Run jsonmaestro in inteactive, defults to this if no other arguments were provided"
 )
 @click.option(
-	"-d",
+ "-d",
     "--debug",
     is_flag=True,
     required=False,
     default=False,
     help="Run jsonmaestro in debug mode, enable debug printing"
 )
-def main(files: list[str], clean: bool, sort: str,interactive: bool, debug: bool):
+def main(files: tuple[str], clean: bool, sort: str,interactive: bool, debug: bool):
+	empty_tuple = ()
+	if empty_tuple:
+		print("This won't be printed")  # This line won't execute.
+	else:
+		print("This will be printed")  # This will execute.
 	if debug:
 		print(f"[DEBUG] files: {files}")
 		print(f"[DEBUG] clean: {clean}")
 		print(f"[DEBUG] sort: {sort}")
 		print(f"[DEBUG] interactive: {interactive}")
 
-	if not files:
+	if len(files) == 0:
+		# pylance thinks this is unreachable, it is reachable hence we are checking the lenght of the tuple
+		if debug:
+			print(f"[DEBUG] lenght of files provided is 0")
 		interactive=True
 
+	# short to interactive mode in no files are provided
 	if interactive:
 		interactive_mode(debug=debug)
+		return
+
+	content_map: Dict[str, Dict[str, Union[Dict[str, Any] , List[Any] , Any]]] = {}
+	for file in files:
+		if not os.path.exists(file):
+			print(f"[ERROR] filepath {file} does not exists")
+			sys.exit(1)
+
+		content_map[file] = {}
+
+		if helpers.is_json(file):
+			content_map[file]["source"] = load_json(file)
+		else:
+			content_map[file]["source"] = load_jsonc(file)
+
+		content_map[file]["clean"] = add_schema_keys(remove_duplicate_keys(content_map[file]["source"]))
+
+		if clean:
+			content_map[file]["clean"] = remove_comments(
+			    content_map[file]["clean"])
+
+		if sort == "a":
+			content_map[file]["clean"] = sort_json_keys(content_map[file]["clean"], False)
+		elif sort == "d":
+			content_map[file]["clean"] = sort_json_keys(content_map[file]["clean"], True)
 
 if __name__ == "__main__":
 	main()
