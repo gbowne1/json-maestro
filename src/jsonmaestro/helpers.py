@@ -1,7 +1,7 @@
 import json
 
-_JSON_FROMAT:str = "json"
-_JSONC_FROMAT:str = "jsonc"
+_JSON_FORMAT:str = "json"
+_JSONC_FORMAT:str = "jsonc"
 
 def is_json(file_path: str)-> bool:
 	try:
@@ -13,5 +13,5 @@ def is_json(file_path: str)-> bool:
 
 def get_format(file_path:str)->str:
 	if is_json(file_path=file_path):
-		return _JSON_FROMAT
-	return _JSONC_FROMAT
+		return _JSON_FORMAT
+	return _JSONC_FORMAT
