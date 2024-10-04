@@ -4,11 +4,7 @@ import sys
 import os
 import click
 
-
-@click.command()
-@click.option("-i","--interactive", default=None, help="Run jsonmaestro in inteactive, defults to this if no other arguments were provided")
-@click.option("-d","--debug",default=False,help="Run jsonmaestro in debug mode, enable debug printing")
-def main(interactive: bool, debug: bool):
+def interactive_mode(debug: bool):
 	input_file = input("Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
 
 	if not os.path.exists(input_file):
@@ -70,6 +66,57 @@ def main(interactive: bool, debug: bool):
 		sys.exit(1)
 
 	print(f"Cleaned data saved to {output_file}")
+
+
+@click.command()
+@click.option("-f","--files", required=False)
+@click.option(
+	"-c",
+    "--clean",
+    is_flag=True,
+    required=False,
+    default=None,
+    type=bool,
+    help="Remove comments from json file"
+)
+@click.option(
+	"-s",
+    "--sort",
+    required=False,
+    default="a",
+    type=str,
+    help="sort json keys in order ascending / descending"
+)
+@click.option(
+    "-i",
+    "--interactive",
+    is_flag=True,
+    required=False,
+    default=None,
+    type=bool,
+    help=
+    "Run jsonmaestro in inteactive, defults to this if no other arguments were provided"
+)
+@click.option(
+	"-d",
+    "--debug",
+    is_flag=True,
+    required=False,
+    default=False,
+    help="Run jsonmaestro in debug mode, enable debug printing"
+)
+def main(files: list[str], clean: bool, sort: str,interactive: bool, debug: bool):
+	if debug:
+		print(f"[DEBUG] files: {files}")
+		print(f"[DEBUG] clean: {clean}")
+		print(f"[DEBUG] sort: {sort}")
+		print(f"[DEBUG] interactive: {interactive}")
+
+	if not files:
+		interactive=True
+
+	if interactive:
+		interactive_mode(debug=debug)
 
 if __name__ == "__main__":
 	main()
