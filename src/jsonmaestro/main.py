@@ -24,31 +24,46 @@ def main():
 	cleaned_data = add_schema_keys(cleaned_data)
 
 	# Remove comments if requested
-	remove_comments_option = input("Do you want to remove comments? (y/n): ").lower()
-	if remove_comments_option == 'y':
+	if input("Do you want to remove comments? (y/n): ").lower() == 'y':
+		if __debug__:
+			print("[DEBUG]: remove_comments = y")
 		cleaned_data = remove_comments(cleaned_data)
+	else:
+		if __debug__:
+			print("[DEBUG]: remove_comments = n")
 
 	# Sort the keys
-	sort_order = input("Do you want to sort keys? (y/n): ").lower()
-	if sort_order == 'y':
+	if input("Do you want to sort keys? (y/n): ").lower() == 'y':
+		if __debug__:
+			print("[DEBUG]: sort_keys = y")
+
 		sort_method = input("Do you want to sort in ascending (a) or descending (d)? ").lower()
 		if sort_method == 'a':
+			if __debug__:
+				print("[DEBUG]: order = a")
+
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
 		elif sort_method == 'd':
+			if __debug__:
+				print("[DEBUG]: order = d")
+
 			cleaned_data = sort_json_keys(cleaned_data, reverse=True)
 		else:
+			if __debug__:
+				print("[DEBUG]: order = {sort_method}")
 			print("Invalid choice. Defaulting to ascending order.")
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
+
+	print(f"Successfully processed {input_file}")
 
 	# Save the cleaned data to the output file
 	output_file = f"{os.path.splitext(input_file)[0]}_clean{os.path.splitext(input_file)[1]}"
 	try:
 		save_json(cleaned_data, output_file)
 	except Exception as e:
-		print(f"Failed to save cleaned data. Error: {str(e)}")
+		print(f"[ERROR]: Failed to save cleaned data because {str(e)}")
 		sys.exit(1)
 
-	print(f"Successfully processed {input_file}")
 	print(f"Cleaned data saved to {output_file}")
 
 if __name__ == "__main__":
