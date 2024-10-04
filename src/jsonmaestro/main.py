@@ -1,5 +1,5 @@
 from jsonmaestro.jsonmaestro import load_json, load_jsonc,remove_comments,remove_duplicate_keys,add_schema_keys, sort_json_keys,save_json
-import helpers
+import jsonmaestro.helpers as helpers
 import sys
 import os
 
