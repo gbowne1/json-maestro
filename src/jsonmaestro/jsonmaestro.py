@@ -31,16 +31,12 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 		print(f"Error: Unexpected content in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
-	return json.loads(content)
 
-def load_vscode_settings(file_path: str) -> Dict[str, Any]:
-	"""Load VSCode settings.json file."""
+def load_json(file_path: str)-> Dict[str, Any]:
+	"""Load json format compliant file."""
 	try:
 		with open(file_path, 'r', encoding='utf-8') as file:
 			content = file.read()
-			# Remove comments starting with //
-			content = re.sub(r'//.*\n', '', content)
-			# Parse the remaining content as JSON
 			return json.loads(content)
 	except FileNotFoundError:
 		print(f"Error: File '{file_path}' not found.")
@@ -53,7 +49,6 @@ def load_vscode_settings(file_path: str) -> Dict[str, Any]:
 		print(f"Error: Unexpected content in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
-
 
 def remove_comments(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[str, Any], List[Any], Any]:
 	"""Remove comments from the object."""
