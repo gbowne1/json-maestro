@@ -19,7 +19,31 @@ JSONMaestro streamlines the process of preparing JSON data for further analysis 
 
 ## Getting Started
 
-[Add installation and basic usage instructions here]
+### From Source
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/gbowne1/json-maestro.git # via https
+git clone git@github.com:gbowne1/json-maestro.git # via ssh
+```
+
+2. navigate to the cloned repository
+
+```bash
+cd /path/to/cloned/json-maestro
+```
+
+3. install using pip
+
+```bash
+pip install -r requirements.txt
+pip install .
+```
+
+ ## Contributing
+
+
 
 ## Contributing
 
