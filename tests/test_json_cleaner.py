@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from jsonmaestro import load_jsonc, load_vscode_settings, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys
+from jsonmaestro import load_jsonc, load_json, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys
 
 def create_temp_json(tmp_path, content):
     file_path = tmp_path / "test_file.json"
@@ -25,7 +25,7 @@ def test_load_jsonc(tmp_path):
     result = load_jsonc(str(file_path))
     assert result == {"key1": "value1", "key2": 42}
 
-def test_load_vscode_settings(tmp_path):
+def test_load_json(tmp_path):
     content = '''
     {
         "editor.fontSize": 14,
@@ -33,7 +33,7 @@ def test_load_vscode_settings(tmp_path):
     }
     '''
     file_path = create_temp_json(tmp_path, content)
-    result = load_vscode_settings(str(file_path))
+    result = load_json(str(file_path))
     assert result == {"editor.fontSize": 14, "files.autoSave": "onFocusChange"}
 
 def test_remove_comments():
