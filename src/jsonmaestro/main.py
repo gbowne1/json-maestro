@@ -1,12 +1,14 @@
 from typing import Any, Dict, List, Union
-from jsonmaestro.jsonmaestro import load_json, load_jsonc,remove_comments,remove_duplicate_keys,add_schema_keys, sort_json_keys,save_json
+from jsonmaestro.jsonmaestro import load_json, load_jsonc, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
 import sys
 import os
 import click
 
+
 def interactive_mode(debug: bool):
-	input_file = input("Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
+	input_file = input(
+	    "Enter the path to your JSON, JSONC, or VSCode settings.json file: ")
 
 	if not os.path.exists(input_file):
 		print(f"[ERROR] filepath {input_file} does not exists")
@@ -19,7 +21,6 @@ def interactive_mode(debug: bool):
 		load_function = load_jsonc
 
 	original_data = load_function(input_file)
-
 
 	# Process the data
 	cleaned_data = remove_duplicate_keys(original_data)
@@ -39,7 +40,9 @@ def interactive_mode(debug: bool):
 		if debug:
 			print("[DEBUG]: sort_keys = y")
 
-		sort_method = input("Do you want to sort in ascending (a) or descending (d)? ").lower()
+		sort_method = input(
+		    "Do you want to sort in ascending (a) or descending (d)? ").lower(
+		    )
 		if sort_method == 'a':
 			if debug:
 				print("[DEBUG]: order = a")
@@ -71,23 +74,19 @@ def interactive_mode(debug: bool):
 
 @click.command()
 @click.option("-f", "--files", multiple=True, required=False, default=())
-@click.option(
- "-c",
-    "--clean",
-    is_flag=True,
-    required=False,
-    default=None,
-    type=bool,
-    help="Remove comments from json file"
-)
-@click.option(
- "-s",
-    "--sort",
-    required=False,
-    default="a",
-    type=str,
-    help="sort json keys in order ascending / descending"
-)
+@click.option("-c",
+              "--clean",
+              is_flag=True,
+              required=False,
+              default=None,
+              type=bool,
+              help="Remove comments from json file")
+@click.option("-s",
+              "--sort",
+              required=False,
+              default="a",
+              type=str,
+              help="sort json keys in order ascending / descending")
 @click.option(
     "-i",
     "--interactive",
@@ -98,15 +97,14 @@ def interactive_mode(debug: bool):
     help=
     "Run jsonmaestro in inteactive, defults to this if no other arguments were provided"
 )
-@click.option(
- "-d",
-    "--debug",
-    is_flag=True,
-    required=False,
-    default=False,
-    help="Run jsonmaestro in debug mode, enable debug printing"
-)
-def main(files: tuple[str], clean: bool, sort: str,interactive: bool, debug: bool):
+@click.option("-d",
+              "--debug",
+              is_flag=True,
+              required=False,
+              default=False,
+              help="Run jsonmaestro in debug mode, enable debug printing")
+def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
+         debug: bool):
 	empty_tuple = ()
 	if empty_tuple:
 		print("This won't be printed")  # This line won't execute.
@@ -122,15 +120,17 @@ def main(files: tuple[str], clean: bool, sort: str,interactive: bool, debug: boo
 		# pylance thinks this is unreachable, it is reachable hence we are checking the lenght of the tuple
 		if debug:
 			print(f"[DEBUG] lenght of files provided is 0")
-		interactive=True
+		interactive = True
 
 	# short to interactive mode in no files are provided
 	if interactive:
 		interactive_mode(debug=debug)
 		return
 
-	content_map: Dict[str, Dict[str, Union[Dict[str, Any] , List[Any] , Any]]] = {}
+	content_map: Dict[str, Dict[str, Union[Dict[str, Any], List[Any],
+	                                       Any]]] = {}
 	for file in files:
+		output_file = f"{os.path.splitext(file)[0]}_clean{os.path.splitext(file)[1]}"
 		if not os.path.exists(file):
 			print(f"[ERROR] filepath {file} does not exists")
 			sys.exit(1)
@@ -142,16 +142,22 @@ def main(files: tuple[str], clean: bool, sort: str,interactive: bool, debug: boo
 		else:
 			content_map[file]["source"] = load_jsonc(file)
 
-		content_map[file]["clean"] = add_schema_keys(remove_duplicate_keys(content_map[file]["source"]))
+		content_map[file]["clean"] = add_schema_keys(
+		    remove_duplicate_keys(content_map[file]["source"]))
 
 		if clean:
 			content_map[file]["clean"] = remove_comments(
 			    content_map[file]["clean"])
 
 		if sort == "a":
-			content_map[file]["clean"] = sort_json_keys(content_map[file]["clean"], False)
+			content_map[file]["clean"] = sort_json_keys(
+			    content_map[file]["clean"], False)
 		elif sort == "d":
-			content_map[file]["clean"] = sort_json_keys(content_map[file]["clean"], True)
+			content_map[file]["clean"] = sort_json_keys(
+			    content_map[file]["clean"], True)
+
+		save_json(content_map[file]["clean"], output_file)
+
 
 if __name__ == "__main__":
 	main()
