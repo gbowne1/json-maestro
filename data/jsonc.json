@@ -1,0 +1,7 @@
+{
+        "key1": "value1",
+        "key2": 42,
+        // this is a comment
+        "key3": true
+        // "key4": false
+}
