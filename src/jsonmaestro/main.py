@@ -95,7 +95,7 @@ def interactive_mode(debug: bool):
     default=None,
     type=bool,
     help=
-    "Run jsonmaestro in inteactive, defults to this if no other arguments were provided"
+    "Run jsonmaestro in interactive, defaults to this if no other arguments were provided"
 )
 @click.option("-d",
               "--debug",
@@ -119,7 +119,7 @@ def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
 	if len(files) == 0:
 		# pylance thinks this is unreachable, it is reachable hence we are checking the lenght of the tuple
 		if debug:
-			print(f"[DEBUG] lenght of files provided is 0")
+			print(f"[DEBUG] length of files provided is 0")
 		interactive = True
 
 	# short to interactive mode in no files are provided
