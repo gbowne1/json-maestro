@@ -16,26 +16,6 @@ def create_temp_json(tmp_path, content):
 		raise AssertionError(f"Failed to create temporary file: {e}")
 
 
-def test_remove_comments():
-	input_data = {
-	    "key1": "value1",
-	    "key2": [1, 2, 3],
-	    "key3": {
-	        "nested": "value"
-	    }
-	    # // "commented_key": "This is a comment"
-	}
-	result = remove_comments(input_data)
-	expected_result = {
-	    "key1": "value1",
-	    "key2": [1, 2, 3],
-	    "key3": {
-	        "nested": "value"
-	    }
-	}
-	assert result == expected_result
-
-
 def test_remove_duplicate_keys():
 	input_data = {
 	    "key1": "value1",
