@@ -41,10 +41,6 @@ pip install -r requirements.txt
 pip install .
 ```
 
- ## Contributing
-
-
-
 ## Contributing
 
 See <CONTRIBUTING.md>
