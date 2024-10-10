@@ -1,0 +1,65 @@
+{
+	// User information section
+	"user": {
+		"id": 12345, // Unique user identifier
+		"name": "John Doe", // Full name of the user
+		"age": 30, // User's age
+		"email": "john.doe@example.com", // User's email address
+		"isActive": true, // Is the user currently active?
+
+		/* This section contains the
+		 user's social media profiles */
+		"socialProfiles": {
+			"twitter": "@johndoe", // Twitter handle
+			"linkedin": "/in/johndoe", // LinkedIn profile URL
+			// Facebook is currently not provided
+			"facebook": null
+		}
+	},
+
+	// List of user's favorite books
+	"favorites": {
+		"books": [
+			{
+				"title": "1984", // Book title
+				"author": "George Orwell", // Author of the book
+				"rating": 4.9 // User's rating for the book
+			},
+			{
+				"title": "To Kill a Mockingbird",
+				"author": "Harper Lee",
+				"rating": 4.8
+			}
+		],
+
+		/* User's favorite movies
+		 Data includes only top 2 movies */
+		"movies": [
+			{
+				"title": "Inception",
+				"year": 2010, // Release year of the movie
+				"rating": 9.0 // Rating out of 10
+			},
+			{
+				"title": "The Matrix",
+				"year": 1999,
+				"rating": 8.7
+			}
+		]
+	},
+
+	// Application settings
+	"settings": {
+		"theme": "dark", // UI theme preference: light or dark
+		"notifications": {
+			"email": true, // Email notifications enabled?
+			"sms": false // SMS notifications enabled?
+		}
+	},
+
+	// Metadata about the JSON file
+	"metadata": {
+		"version": 1.0, // Version of the file structure
+		"lastUpdated": "2024-10-10T08:00:00Z" // Last update timestamp
+	}
+}
