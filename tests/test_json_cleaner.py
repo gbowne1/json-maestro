@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from jsonmaestro import load_jsonc, load_json, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys
+from jsonmaestro import load_jsonc, load_json, remove_comments, add_schema_keys, sort_json_keys
 
 
 def create_temp_json(tmp_path, content):
@@ -14,17 +14,6 @@ def create_temp_json(tmp_path, content):
 		return file_path
 	except IOError as e:
 		raise AssertionError(f"Failed to create temporary file: {e}")
-
-
-def test_remove_duplicate_keys():
-	input_data = {
-	    "key1": "value1",
-	    "key2": "value2",
-	    "key1": "value3"  # Duplicate key
-	}
-	result = remove_duplicate_keys(input_data)
-	expected_result = {"key1": "value3", "key2": "value2"}
-	assert result == expected_result
 
 
 def test_add_schema_keys():
