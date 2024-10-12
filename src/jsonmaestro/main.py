@@ -1,5 +1,5 @@
 from typing import Any, Dict, List, Union
-from jsonmaestro.jsonmaestro import load_json, load_jsonc, remove_comments, remove_duplicate_keys, add_schema_keys, sort_json_keys, save_json
+from jsonmaestro.jsonmaestro import load_json, load_jsonc, remove_comments, add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
 import sys
 import os
@@ -23,8 +23,7 @@ def interactive_mode(debug: bool):
 	original_data = load_function(input_file)
 
 	# Process the data
-	cleaned_data = remove_duplicate_keys(original_data)
-	cleaned_data = add_schema_keys(cleaned_data)
+	cleaned_data = add_schema_keys(original_data)
 
 	# Remove comments if requested
 	if input("Do you want to remove comments? (y/n): ").lower() == 'y':
@@ -143,7 +142,7 @@ def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
 			content_map[file]["source"] = load_jsonc(file)
 
 		content_map[file]["clean"] = add_schema_keys(
-		    remove_duplicate_keys(content_map[file]["source"]))
+		    content_map[file]["source"])
 
 		if clean:
 			content_map[file]["clean"] = remove_comments(

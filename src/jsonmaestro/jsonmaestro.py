@@ -29,7 +29,8 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 		print("Please check the contents of the file.")
 		sys.exit(1)
 
-def load_json(file_path: str)-> Dict[str, Any]:
+
+def load_json(file_path: str) -> Dict[str, Any]:
 	"""Load json format compliant file."""
 	try:
 		with open(file_path, 'r', encoding='utf-8') as file:
@@ -53,28 +54,6 @@ def remove_comments(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[st
 	else:
 		return obj
 
-def remove_duplicate_keys(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[str, Any], List[Any], Any]:
-	"""
-	Recursively remove duplicate keys from a nested object.
-
-	Args:
-	obj: A dictionary, list, or any other object to process.
-
-	Returns:
-	A dictionary, list, or any other object with duplicate keys removed.
-	"""
-	if isinstance(obj, dict):
-		new_obj: Dict[str, Any] = {}
-		seen_keys: Set[str] = set()
-		for key, value in obj.items():
-			if key not in seen_keys:
-				seen_keys.add(key)
-				new_obj[key] = remove_duplicate_keys(value)
-		return new_obj
-	elif isinstance(obj, list):
-		return [remove_duplicate_keys(item) for item in obj]
-	else:
-		return obj
 
 def add_schema_keys(obj: T) -> T:
 	"""
