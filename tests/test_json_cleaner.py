@@ -3,7 +3,7 @@ import json
 import os
 import tempfile
 from pathlib import Path
-from jsonmaestro import load_jsonc, load_json, remove_comments, add_schema_keys, sort_json_keys
+from jsonmaestro import add_schema_keys, sort_json_keys
 
 
 def create_temp_json(tmp_path, content):
