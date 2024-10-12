@@ -1,5 +1,5 @@
 from typing import Any, Dict, List, Union
-from jsonmaestro.jsonmaestro import load_json, load_jsonc, remove_comments, add_schema_keys, sort_json_keys, save_json
+from jsonmaestro.jsonmaestro import load_json, load_jsonc, add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
 import sys
 import os
@@ -24,15 +24,6 @@ def interactive_mode(debug: bool):
 
 	# Process the data
 	cleaned_data = add_schema_keys(original_data)
-
-	# Remove comments if requested
-	if input("Do you want to remove comments? (y/n): ").lower() == 'y':
-		if debug:
-			print("[DEBUG]: remove_comments = y")
-		cleaned_data = remove_comments(cleaned_data)
-	else:
-		if debug:
-			print("[DEBUG]: remove_comments = n")
 
 	# Sort the keys
 	if input("Do you want to sort keys? (y/n): ").lower() == 'y':
@@ -73,13 +64,6 @@ def interactive_mode(debug: bool):
 
 @click.command()
 @click.option("-f", "--files", multiple=True, required=False, default=())
-@click.option("-c",
-              "--clean",
-              is_flag=True,
-              required=False,
-              default=None,
-              type=bool,
-              help="Remove comments from json file")
 @click.option("-s",
               "--sort",
               required=False,
@@ -102,8 +86,7 @@ def interactive_mode(debug: bool):
               required=False,
               default=False,
               help="Run jsonmaestro in debug mode, enable debug printing")
-def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
-         debug: bool):
+def main(files: tuple[str], sort: str, interactive: bool, debug: bool):
 	empty_tuple = ()
 	if empty_tuple:
 		print("This won't be printed")  # This line won't execute.
@@ -111,7 +94,6 @@ def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
 		print("This will be printed")  # This will execute.
 	if debug:
 		print(f"[DEBUG] files: {files}")
-		print(f"[DEBUG] clean: {clean}")
 		print(f"[DEBUG] sort: {sort}")
 		print(f"[DEBUG] interactive: {interactive}")
 
@@ -143,10 +125,6 @@ def main(files: tuple[str], clean: bool, sort: str, interactive: bool,
 
 		content_map[file]["clean"] = add_schema_keys(
 		    content_map[file]["source"])
-
-		if clean:
-			content_map[file]["clean"] = remove_comments(
-			    content_map[file]["clean"])
 
 		if sort == "a":
 			content_map[file]["clean"] = sort_json_keys(
