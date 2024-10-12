@@ -4,6 +4,7 @@ from typing import Union, List, Dict, Any, cast, TypeVar, Set
 
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 
+
 def load_jsonc(file_path: str) -> Dict[str, Any]:
 	"""Load JSONC from a file, skipping comments starting with // and handling control characters."""
 	try:
@@ -16,11 +17,13 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 			return json.loads(cleaned_content)
 
 	except json.JSONDecodeError as e:
-		print(f"Error: Invalid JSON format in the file. Error details: {str(e)}")
+		print(
+		    f"Error: Invalid JSON format in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
 	except ValueError as e:
-		print(f"Error: Unexpected content in the file. Error details: {str(e)}")
+		print(
+		    f"Error: Unexpected content in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
 
@@ -32,11 +35,13 @@ def load_json(file_path: str) -> Dict[str, Any]:
 			content = file.read()
 			return json.loads(content)
 	except json.JSONDecodeError as e:
-		print(f"Error: Invalid JSON format in the file. Error details: {str(e)}")
+		print(
+		    f"Error: Invalid JSON format in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
 	except ValueError as e:
-		print(f"Error: Unexpected content in the file. Error details: {str(e)}")
+		print(
+		    f"Error: Unexpected content in the file. Error details: {str(e)}")
 		print("Please check the contents of the file.")
 		sys.exit(1)
 
@@ -113,13 +118,14 @@ def add_schema_keys(obj: T) -> T:
 			if isinstance(value, list) and key.startswith("json.schemas"):
 				schema_list: List[Dict[str, Any]] = value
 				for schema_item in schema_list:
-						schema_item.setdefault("fileMatch", [])
-						schema_item.setdefault("url", "")
+					schema_item.setdefault("fileMatch", [])
+					schema_item.setdefault("url", "")
 	elif isinstance(obj, list):
 		obj_list: List[Any] = obj
 		for item in obj_list:
 			add_schema_keys(item)
 	return obj
+
 
 def sort_json_keys(obj: T, reverse: bool = False) -> T:
 	"""
@@ -133,7 +139,11 @@ def sort_json_keys(obj: T, reverse: bool = False) -> T:
 	The processed object with sorted keys.
 	"""
 	if isinstance(obj, dict):
-		sorted_dict = {k: sort_json_keys(v, reverse) for k, v in sorted(obj.items(), key=lambda x: x[0], reverse=reverse)}
+		sorted_dict = {
+		    k: sort_json_keys(v, reverse)
+		    for k, v in sorted(
+		        obj.items(), key=lambda x: x[0], reverse=reverse)
+		}
 		return cast(T, sorted_dict)
 	elif isinstance(obj, list):
 		sorted_list = [sort_json_keys(item, reverse) for item in obj]
@@ -141,7 +151,9 @@ def sort_json_keys(obj: T, reverse: bool = False) -> T:
 	else:
 		return obj
 
-def save_json(data: Union[Dict[str, Any], List[Any], str, int, float, bool], file_path: str) -> None:
+
+def save_json(data: Union[Dict[str, Any], List[Any], str, int, float, bool],
+              file_path: str) -> None:
 	"""
 	Save JSON data to a file.
 
