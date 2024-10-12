@@ -1,6 +1,5 @@
 import json
 import sys
-import re
 from typing import Union, List, Dict, Any, cast, TypeVar, Set
 
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
@@ -11,14 +10,10 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 		with open(file_path, 'r', encoding='utf-8') as file:
 			content = file.read()
 
-			# Remove comments starting with //
-			content = re.sub(r'//.*\n', '', content)
-
-			# Handle control characters
-			content = re.sub(r'[^\x20-\x7E]', '', content)
+			cleaned_content = remove_comments(content)
 
 			# Parse the remaining content as JSON
-			return json.loads(content)
+			return json.loads(cleaned_content)
 
 	except json.JSONDecodeError as e:
 		print(f"Error: Invalid JSON format in the file. Error details: {str(e)}")
@@ -45,14 +40,59 @@ def load_json(file_path: str) -> Dict[str, Any]:
 		print("Please check the contents of the file.")
 		sys.exit(1)
 
-def remove_comments(obj: Union[Dict[str, Any], List[Any], Any]) -> Union[Dict[str, Any], List[Any], Any]:
-	"""Remove comments from the object."""
-	if isinstance(obj, dict):
-		return {k: remove_comments(v) for k, v in obj.items()}
-	elif isinstance(obj, list):
-		return [remove_comments(item) for item in obj]
-	else:
-		return obj
+
+def remove_comments(jsonc_content: str) -> str:
+	"""
+		Removes the comments from source
+	"""
+	inside_string = False
+	inside_block_comment = False
+	inside_line_comment = False
+	result: List[str] = []
+	i = 0
+	length = len(jsonc_content)
+
+	while i < length:
+		char = jsonc_content[i]
+		next_char = jsonc_content[i + 1] if i + 1 < length else ''
+
+		# Toggle the string state if encountering a double quote (and not escaping it)
+		if char == '"' and not inside_block_comment and not inside_line_comment:
+			if i == 0 or jsonc_content[i - 1] != '\\':
+				inside_string = not inside_string
+
+		# Start of block comment (/*)
+		if not inside_string and not inside_block_comment and not inside_line_comment and char == '/' and next_char == '*':
+			inside_block_comment = True
+			i += 2  # Skip the /* characters
+			continue
+
+		# End of block comment (*/)
+		if inside_block_comment and char == '*' and next_char == '/':
+			inside_block_comment = False
+			i += 2  # Skip the */ characters
+			continue
+
+		# Start of line comment (//)
+		if not inside_string and not inside_block_comment and not inside_line_comment and char == '/' and next_char == '/':
+			inside_line_comment = True
+			i += 2  # Skip the // characters
+			continue
+
+		# End of line comment (at newline)
+		if inside_line_comment and char == '\n':
+			inside_line_comment = False
+			result.append(char)  # Keep the newline
+			i += 1
+			continue
+
+		# If not inside a comment, append the character to the result
+		if not inside_block_comment and not inside_line_comment:
+			result.append(char)
+
+		i += 1
+
+	return ''.join(result)
 
 
 def add_schema_keys(obj: T) -> T:
