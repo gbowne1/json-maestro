@@ -1,6 +1,6 @@
 import json
 import sys
-from typing import Union, List, Dict, Any, cast, TypeVar, Set
+from typing import Union, List, Dict, Any, cast, TypeVar
 
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 
