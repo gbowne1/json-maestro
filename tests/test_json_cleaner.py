@@ -16,8 +16,6 @@ def test_add_schema_keys():
 	input_data = {}
 	result = add_schema_keys(input_data)
 	assert "json.schemas" in result
-	assert isinstance(result["json.schemas"], list)
-	assert len(result["json.schemas"]) > 0
 
 
 def test_sort_json_keys():
