@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import mock_open
-from jsonmaestro import is_json, get_format
+from jsonmaestro.helpers import is_json, get_format
 
 # Mock Data
 valid_json_content = '{"name": "John", "age": 30}'  # Valid JSON content

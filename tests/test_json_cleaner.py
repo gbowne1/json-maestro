@@ -1,4 +1,4 @@
-from jsonmaestro import remove_duplicate_keys, add_schema_keys, sort_json_keys
+from jsonmaestro import add_schema_keys, sort_json_keys
 
 
 def test_add_schema_keys():
