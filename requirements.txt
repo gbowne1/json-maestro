@@ -1,10 +1,2 @@
-black
-flake8
-pytest
-pytest-cov
-pytest-mock
-pylint
-pyright
-pylance
-debugpy
 click
+setuptools

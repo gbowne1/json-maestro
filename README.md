@@ -34,13 +34,19 @@ git clone git@github.com:gbowne1/json-maestro.git # via ssh
 cd /path/to/cloned/json-maestro
 ```
 
-3. install using pip
+3. install requirements
 
 ```bash
 pip install -r requirements.txt
-pip install .
 ```
 
+4. install json maestro using your prefered method (NOTE: both are shown here, either one should work)
+
+```bash
+pip install . # for installing using pip
+python setup.py install # for using setup.py script
+
+```
 ## Contributing
 
 See <CONTRIBUTING.md>
