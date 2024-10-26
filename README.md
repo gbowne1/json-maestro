@@ -38,18 +38,25 @@ cd /path/to/cloned/json-maestro
 
 ```bash
 pip install -r requirements.txt
+pip install -r dev.requirements
+pip install --upgrade build
 ```
 
-4. install json maestro using your prefered method (NOTE: both are shown here, either one should work)
+4. build json maestro
 
 ```bash
-pip install . # for installing using pip
-python setup.py install # for using setup.py script
+python3 -m build
+```
+
+5. install json maestro using your prefered method (NOTE: both are shown here, either one should work)
+
+```bash
+pip install .
 
 ```
 ## Contributing
 
-See <CONTRIBUTING.md>
+See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 If you would like to work on issues and new features, we welcome your issues and Pull Requests.
 
