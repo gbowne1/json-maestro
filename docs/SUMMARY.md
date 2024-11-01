@@ -9,7 +9,11 @@
 - [Installation](./Installation.md)
 - [Library Installation](./Library_Installation.md)
 - [Usage](./Usage.md)
-- [API](./API.md)
+
+# Reference
+- [API](./api/index.md)
+- [JsonMaestro](./api/jsonmaestro.md)
+- [Helpers](./api/helpers.md)
 
 # Contributing
 
