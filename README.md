@@ -63,3 +63,5 @@ If you would like to work on issues and new features, we welcome your issues and
 ## License
 
 MIT
+
+[See the License](./LICENSE)
