@@ -11,9 +11,12 @@
 - [Usage](./Usage.md)
 
 # Reference
+
 - [API](./api/index.md)
 - [JsonMaestro](./api/jsonmaestro.md)
+	- [Examples](./api/jsonmaestro-examples.md)
 - [Helpers](./api/helpers.md)
+
 
 # Contributing
 
