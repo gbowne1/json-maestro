@@ -17,3 +17,7 @@ indent_style = space
 [*.sh]
 indent_style = space
 end_of_line = lf
+
+[*.md]
+indent_style = space
+end_of_line = lf
