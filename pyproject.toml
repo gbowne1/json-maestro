@@ -8,7 +8,7 @@ version = "0.0.1"
 authors = [{ name = "Greg Bowne", email = "gbowne144@gmail.com" }]
 description = "JSONMaestro is a powerful Python tool designed to clean, process, and optimize JSON-like files."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 classifiers = [
 	"Programming Language :: Python :: 3",
 	"License :: OSI Approved :: MIT License",
