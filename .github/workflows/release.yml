@@ -47,7 +47,7 @@ jobs:
               run: cargo install --git https://github.com/rust-lang/mdBook.git mdbook
 
             - name: Build docs
-              run: mdbook build
+              run: bash ./scripts/docs/build.sh
 
             - name: Upload docs artifact
               uses: actions/upload-pages-artifact@v3
