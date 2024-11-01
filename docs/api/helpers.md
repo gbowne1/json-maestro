@@ -1,6 +1,8 @@
 # Helpers
 
-## is_json
+## functions
+
+### is_json
 
 Signature:
 ```python
@@ -16,7 +18,7 @@ Parameters:
 Returns:
 `True` if the file is a JSON file, `False` otherwise.
 
-## get_format
+### get_format
 
 Signature:
 ```python
