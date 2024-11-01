@@ -37,3 +37,30 @@ with open("path/to/file.jsonc", "r") as file:
 
     print(cleaned_content)
 ```
+
+## add_schema_keys
+
+>NOTE:
+>This example will be added in the future.
+
+## sort_json_keys
+
+```python
+from jsonmaestro import sort_json_keys
+
+data = {"key1": "value1", "key2": 123, "key3": [1, 2, 3]}
+
+sorted_data = sort_json_keys(data)
+
+print(sorted_data)
+```
+
+## save_json
+
+```python
+from jsonmaestro import save_json
+
+data = {"key1": "value1", "key2": 123, "key3": [1, 2, 3]}
+
+save_json(data, "path/to/file.json")
+```
