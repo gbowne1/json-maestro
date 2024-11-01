@@ -13,3 +13,7 @@ insert_final_newline = false
 
 [*.{yml,yaml}]
 indent_style = space
+
+[*.sh]
+indent_style = space
+end_of_line = lf
