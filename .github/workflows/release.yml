@@ -6,7 +6,7 @@ on:
             - "v*"
 
 permissions:
-    contents: read
+    contents: write
 
 jobs:
     deploy:
@@ -14,6 +14,8 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
+              with:
+                  ref: master
 
             - name: Set up Python
               uses: actions/setup-python@v3
@@ -25,6 +27,15 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install build
 
+            - name: Update version
+              env:
+                  GITHUB_REF_NAME: ${{ github.ref_name }}
+              run: |
+                  VERSION=$(echo "$GITHUB_REF_NAME" | sed 's/^v//')
+                  echo "Updating version to $VERSION"
+                  sed -i "s|^version = .*|version = \"$VERSION\"|" pyproject.toml
+                  cat pyproject.toml
+
             - name: Build package
               run: python -m build
 
@@ -33,3 +44,52 @@ jobs:
               with:
                   user: __token__
                   password: ${{ secrets.PYPI_API_TOKEN }}
+
+            - name: Commit and push changes
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git config user.name 'github-actions[bot]'
+                  git config user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add pyproject.toml
+                  git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+                  git commit -m "Update version to ${{ github.ref_name }}"
+                  git push origin master
+
+    build-docs:
+        needs: deploy
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  ref: master
+            - uses: dtolnay/rust-toolchain@stable
+
+            - name: Install mdbook
+              run: cargo install --git https://github.com/rust-lang/mdBook.git mdbook
+
+            - name: Build docs
+              run: bash ./scripts/docs/build.sh
+
+            - name: Upload docs artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: book
+
+    deploy-docs:
+        needs: build-docs
+        permissions:
+            pages: write
+            id-token: write
+
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        runs-on: ubuntu-latest
+        steps:
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4

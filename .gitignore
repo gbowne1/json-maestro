@@ -161,3 +161,6 @@ pyrightconfig.json
 
 # Debugpy
 .debugpy
+
+# docs build directory
+book

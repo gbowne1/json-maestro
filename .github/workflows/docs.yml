@@ -1,0 +1,28 @@
+name: docs
+
+on:
+    push:
+        branches: ["master"]
+        paths: ["docs/**"]
+    pull_request:
+        branches: ["master"]
+        paths: ["docs/**"]
+
+# This ensures that previous jobs for the PR are canceled when the PR is
+# updated.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.head_ref }}
+    cancel-in-progress: true
+
+jobs:
+    docs:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: dtolnay/rust-toolchain@stable
+
+            - name: Install mdbook
+              run: cargo install --git https://github.com/rust-lang/mdBook.git mdbook
+
+            - name: Build docs
+              run: bash ./scripts/docs/build.sh
