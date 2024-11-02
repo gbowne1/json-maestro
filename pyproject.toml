@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jsonmaestro"
-version = "0.0.1"
+version = "0.0.2"
 authors = [{ name = "Greg Bowne", email = "gbowne144@gmail.com" }]
 description = "JSONMaestro is a powerful Python tool designed to clean, process, and optimize JSON-like files."
 readme = "README.md"
