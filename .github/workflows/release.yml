@@ -15,17 +15,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Set up Python
-              uses: actions/setup-python@v3
-              with:
-                  python-version: "3.9"
-
-            - name: Install dependencies
-              run: |
-                  python -m pip install --upgrade pip
-                  pip install build
-
-            - name: Update version
+            - name: Check version
               env:
                   GITHUB_REF_NAME: ${{ github.ref_name }}
               run: |
@@ -37,6 +27,16 @@ jobs:
                   else
                       echo "VERSION ($VERSION) matches CURR ($CURR). Proceeding."
                   fi
+
+            - name: Set up Python
+              uses: actions/setup-python@v3
+              with:
+                  python-version: "3.9"
+
+            - name: Install dependencies
+              run: |
+                  python -m pip install --upgrade pip
+                  pip install build
 
             - name: Build package
               run: python -m build
