@@ -14,8 +14,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-              with:
-                  ref: master
 
             - name: Set up Python
               uses: actions/setup-python@v3
@@ -56,8 +54,6 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-              with:
-                  ref: master
             - uses: dtolnay/rust-toolchain@stable
 
             - name: Install mdbook
