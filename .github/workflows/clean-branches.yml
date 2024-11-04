@@ -1,0 +1,29 @@
+name: Cleanup Merged Branches
+
+on:
+    pull_request:
+        types: [closed] # This triggers the workflow when a PR is closed (merged or not)
+
+permissions:
+    contents: write
+
+jobs:
+    cleanup:
+        if: github.event.pull_request.merged == true # Only run if the PR was merged
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Get branch name from PR
+              id: get_branch
+              run: echo "branch_name=${{ github.event.pull_request.head.ref }}" >> $GITHUB_ENV
+
+            - name: Delete branch if not main or master
+              if: env.branch_name != 'main' && env.branch_name != 'master'
+              run: |
+                  echo "Deleting branch: ${{ env.branch_name }}"
+                  git push origin --delete "${{ env.branch_name }}"
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
