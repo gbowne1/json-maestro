@@ -1,6 +1,6 @@
 import json
-import sys
 from typing import Union, List, Dict, Any, cast, TypeVar
+from logger import fatal
 
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 
@@ -17,15 +17,13 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 			return json.loads(cleaned_content)
 
 	except json.JSONDecodeError as e:
-		print(
-		    f"Error: Invalid JSON format in the file. Error details: {str(e)}")
-		print("Please check the contents of the file.")
-		sys.exit(1)
+		fatal(
+		    f"Error: Invalid JSON format in the file. Error details: {str(e)}\n"
+		    + "Please check the contents of the file.")
 	except ValueError as e:
-		print(
-		    f"Error: Unexpected content in the file. Error details: {str(e)}")
-		print("Please check the contents of the file.")
-		sys.exit(1)
+		fatal(
+		    f"Error: Unexpected content in the file. Error details: {str(e)}\n"
+		    + print("Please check the contents of the file."))
 
 
 def load_json(file_path: str) -> Dict[str, Any]:
@@ -35,15 +33,13 @@ def load_json(file_path: str) -> Dict[str, Any]:
 			content = file.read()
 			return json.loads(content)
 	except json.JSONDecodeError as e:
-		print(
-		    f"Error: Invalid JSON format in the file. Error details: {str(e)}")
-		print("Please check the contents of the file.")
-		sys.exit(1)
+		fatal(
+		    f"Error: Invalid JSON format in the file. Error details: {str(e)}\n"
+		    + "Please check the contents of the file.")
 	except ValueError as e:
-		print(
-		    f"Error: Unexpected content in the file. Error details: {str(e)}")
-		print("Please check the contents of the file.")
-		sys.exit(1)
+		fatal(
+		    f"Error: Unexpected content in the file. Error details: {str(e)}\n"
+		    + "Please check the contents of the file.")
 
 
 def remove_comments(jsonc_content: str) -> str:
@@ -169,7 +165,6 @@ def save_json(data: Union[Dict[str, Any], List[Any], str, int, float, bool],
 		with open(file_path, 'w', encoding='utf-8') as file:
 			json.dump(data, file, indent=2)
 	except IOError as e:
-		print(f"Error: Unable to write to file '{file_path}'. Error: {str(e)}")
-		sys.exit(1)
+		fatal(f"Error: Unable to write to file '{file_path}'. Error: {str(e)}")
 	except TypeError as e:
 		raise ValueError(f"Invalid JSON data: {str(e)}")
