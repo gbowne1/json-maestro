@@ -1,10 +1,10 @@
 from typing import Any, Dict, List, Union
 from jsonmaestro.jsonmaestro import load_json, load_jsonc, add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
+import jsonmaestro.logger as logger
 import sys
 import os
 import click
-import logger
 
 
 def interactive_mode(debug: bool):
