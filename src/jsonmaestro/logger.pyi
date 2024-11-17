@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, NoReturn
 
 NO_LEVEL: int
 DEBUG_LEVEL: int
@@ -44,5 +44,5 @@ def error(message: str, **kwargs: dict[Any, Any]) -> None:
 	...
 
 
-def fatal(message: str, **kwargs: dict[Any, Any]) -> None:
+def fatal(message: str, **kwargs: dict[Any, Any]) -> NoReturn:
 	...

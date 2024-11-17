@@ -1,5 +1,5 @@
 import sys
-from typing import Any
+from typing import Any, NoReturn
 
 NO_LEVEL = -1
 DEBUG_LEVEL = 0
@@ -68,8 +68,9 @@ def error(message: str, **kwargs: Any):
 	logger_print(ERROR_LEVEL, construct_message(message, **kwargs))
 
 
-def fatal(message: str, **kwargs: Any):
+def fatal(message: str, **kwargs: Any) -> NoReturn:
 	logger_print(FATAL_LEVEL, construct_message(message, **kwargs))
+	sys.exit(1)
 
 
 if __name__ == "__main__":
