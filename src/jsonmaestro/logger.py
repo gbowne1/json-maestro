@@ -38,7 +38,7 @@ def logger_print(level: int, message: str):
 		sys.exit(1)
 
 
-def construct_message(message: str, **kwargs: dict[Any, Any]) -> str:
+def construct_message(message: str, **kwargs: Any) -> str:
 	if kwargs:
 		context_mesage = "".join(
 		    f"\t{key}={value}\n"
@@ -48,27 +48,27 @@ def construct_message(message: str, **kwargs: dict[Any, Any]) -> str:
 		return message
 
 
-def log(message: str, **kwargs: dict[Any, Any]):
+def log(message: str, **kwargs: Any):
 	logger_print(NO_LEVEL, construct_message(message, **kwargs))
 
 
-def debug(message: str, **kwargs: dict[Any, Any]):
+def debug(message: str, **kwargs: Any):
 	logger_print(DEBUG_LEVEL, construct_message(message, **kwargs))
 
 
-def info(message: str, **kwargs: dict[Any, Any]):
+def info(message: str, **kwargs: Any):
 	logger_print(INFO_LEVEL, construct_message(message, **kwargs))
 
 
-def warn(message: str, **kwargs: dict[Any, Any]):
+def warn(message: str, **kwargs: Any):
 	logger_print(WARN_LEVEL, construct_message(message, **kwargs))
 
 
-def error(message: str, **kwargs: dict[Any, Any]):
+def error(message: str, **kwargs: Any):
 	logger_print(ERROR_LEVEL, construct_message(message, **kwargs))
 
 
-def fatal(message: str, **kwargs: dict[Any, Any]):
+def fatal(message: str, **kwargs: Any):
 	logger_print(FATAL_LEVEL, construct_message(message, **kwargs))
 
 
