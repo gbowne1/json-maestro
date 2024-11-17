@@ -1,4 +1,3 @@
-import sys
 from typing import Any, NoReturn
 
 NO_LEVEL = -1
@@ -35,7 +34,6 @@ def logger_print(level: int, message: str):
 		return
 	if level is FATAL_LEVEL:
 		print(f"{FATAL_COLOR}[ FATAL ]{RESET_COLOR}: {message}")
-		sys.exit(1)
 
 
 def construct_message(message: str, **kwargs: Any) -> str:
@@ -70,7 +68,7 @@ def error(message: str, **kwargs: Any):
 
 def fatal(message: str, **kwargs: Any) -> NoReturn:
 	logger_print(FATAL_LEVEL, construct_message(message, **kwargs))
-	sys.exit(1)
+	exit(1)
 
 
 if __name__ == "__main__":
