@@ -23,7 +23,7 @@ def load_jsonc(file_path: str) -> Dict[str, Any]:
 	except ValueError as e:
 		fatal(
 		    f"Error: Unexpected content in the file. Error details: {str(e)}\n"
-		    + print("Please check the contents of the file."))
+		    + "Please check the contents of the file.")
 
 
 def load_json(file_path: str) -> Dict[str, Any]:
