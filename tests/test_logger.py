@@ -1,11 +1,17 @@
 import pytest
 from jsonmaestro.logger import (
     log,
+    logf,
     debug,
+    debugf,
     info,
+    infof,
     warn,
+    warnf,
     error,
+    errorf,
     fatal,
+    fatalf,
     RESET_COLOR,
     DEBUG_COLOR,
     INFO_COLOR,
@@ -98,3 +104,73 @@ def test_fatal_with_kwargs(capsys):
 	captured = capsys.readouterr()
 	assert f"{FATAL_COLOR}[ FATAL ]{RESET_COLOR}: Fatal message with kwargs" in captured.out
 	assert "\tkey=value" in captured.out
+
+
+def test_logf(capsys):
+	logf("Test {} with {}", "formatting", "args")
+	captured = capsys.readouterr()
+	assert "Test formatting with args" in captured.out
+
+
+def test_debugf_no_kwargs(capsys):
+	debugf("Debug {} with {}", "formatted", "message")
+	captured = capsys.readouterr()
+	assert f"{DEBUG_COLOR}[ DEBUG ]{RESET_COLOR}: Debug formatted with message" in captured.out
+
+
+def test_infof_no_kwargs(capsys):
+	infof("Info {} with {}", "formatted", "message")
+	captured = capsys.readouterr()
+	assert f"{INFO_COLOR}[ INFO ]{RESET_COLOR}: Info formatted with message" in captured.out
+
+
+def test_warnf_no_kwargs(capsys):
+	warnf("Warn {} with {}", "formatted", "message")
+	captured = capsys.readouterr()
+	assert f"{WARN_COLOR}[ WARN ]{RESET_COLOR}: Warn formatted with message" in captured.out
+
+
+def test_errorf_no_kwargs(capsys):
+	errorf("Error {} with {}", "formatted", "message")
+	captured = capsys.readouterr()
+	assert f"{ERROR_COLOR}[ ERROR ]{RESET_COLOR}: Error formatted with message" in captured.out
+
+
+def test_fatalf_no_kwargs(capsys):
+	with pytest.raises(
+	    SystemExit):  # Expect SystemExit due to exit(1) in fatalf
+		fatalf("Fatal {} with {}", "formatted", "message")
+	captured = capsys.readouterr()
+	assert f"{FATAL_COLOR}[ FATAL ]{RESET_COLOR}: Fatal formatted with message" in captured.out
+
+
+def test_debugf_with_args(capsys):
+	debugf("Debug value: {}, another: {}", 42, "test")
+	captured = capsys.readouterr()
+	assert f"{DEBUG_COLOR}[ DEBUG ]{RESET_COLOR}: Debug value: 42, another: test" in captured.out
+
+
+def test_infof_with_args(capsys):
+	infof("User {} logged in at {}", "Alice", "10:00 AM")
+	captured = capsys.readouterr()
+	assert f"{INFO_COLOR}[ INFO ]{RESET_COLOR}: User Alice logged in at 10:00 AM" in captured.out
+
+
+def test_warnf_with_args(capsys):
+	warnf("Disk space is {}% full", 85)
+	captured = capsys.readouterr()
+	assert f"{WARN_COLOR}[ WARN ]{RESET_COLOR}: Disk space is 85% full" in captured.out
+
+
+def test_errorf_with_args(capsys):
+	errorf("Error {} occurred at {}", "500", "/path/to/resource")
+	captured = capsys.readouterr()
+	assert f"{ERROR_COLOR}[ ERROR ]{RESET_COLOR}: Error 500 occurred at /path/to/resource" in captured.out
+
+
+def test_fatalf_with_args(capsys):
+	with pytest.raises(
+	    SystemExit):  # Expect SystemExit due to exit(1) in fatalf
+		fatalf("Critical {}: code {}", "error", 500)
+	captured = capsys.readouterr()
+	assert f"{FATAL_COLOR}[ FATAL ]{RESET_COLOR}: Critical error: code 500" in captured.out

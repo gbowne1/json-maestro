@@ -50,20 +50,40 @@ def log(message: str, **kwargs: Any):
 	logger_print(NO_LEVEL, construct_message(message, **kwargs))
 
 
+def logf(format_str: str, *args: Any):
+	logger_print(NO_LEVEL, construct_message(format_str.format(*args)))
+
+
 def debug(message: str, **kwargs: Any):
 	logger_print(DEBUG_LEVEL, construct_message(message, **kwargs))
+
+
+def debugf(format_str: str, *args: Any):
+	logger_print(DEBUG_LEVEL, format_str.format(*args))
 
 
 def info(message: str, **kwargs: Any):
 	logger_print(INFO_LEVEL, construct_message(message, **kwargs))
 
 
+def infof(format_str: str, *args: Any):
+	logger_print(INFO_LEVEL, format_str.format(*args))
+
+
 def warn(message: str, **kwargs: Any):
 	logger_print(WARN_LEVEL, construct_message(message, **kwargs))
 
 
+def warnf(format_str: str, *args: Any):
+	logger_print(WARN_LEVEL, format_str.format(*args))
+
+
 def error(message: str, **kwargs: Any):
 	logger_print(ERROR_LEVEL, construct_message(message, **kwargs))
+
+
+def errorf(format_str: str, *args: Any):
+	logger_print(ERROR_LEVEL, format_str.format(*args))
 
 
 def fatal(message: str, **kwargs: Any) -> NoReturn:
@@ -71,15 +91,25 @@ def fatal(message: str, **kwargs: Any) -> NoReturn:
 	exit(1)
 
 
+def fatalf(format_str: str, *args: Any) -> NoReturn:
+	logger_print(FATAL_LEVEL, format_str.format(*args))
+	exit(1)
+
+
 if __name__ == "__main__":
 	log("hello")
 	log("this is kwargs example", hello="world")
+	logf("hello {}", "world")
 	debug("hello")
 	debug("this is kwargs example", hello="world")
+	debugf("hello {}", "world")
 	info("hello")
 	info("this is kwargs example", hello="world")
+	infof("hello {}", "world")
 	warn("hello")
 	warn("this is kwargs example", hello="world")
+	warnf("hello {}", "world")
 	error("hello")
 	error("this is kwargs example", hello="world")
+	errorf("hello {}", "world")
 	exit(0)
