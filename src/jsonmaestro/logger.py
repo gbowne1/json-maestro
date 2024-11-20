@@ -16,7 +16,7 @@ _FATAL_COLOR = "\033[95m"  # Bright Magenta
 
 
 # For match we need 3.10
-def logger_print(level: int, message: str):
+def _logger_print(level: int, message: str):
 	if level is _NO_LEVEL:
 		print(message)
 		return
@@ -36,7 +36,7 @@ def logger_print(level: int, message: str):
 		print(f"{_FATAL_COLOR}[ FATAL ]{_RESET_COLOR}: {message}")
 
 
-def construct_message(message: str, **kwargs: Any) -> str:
+def _construct_message(message: str, **kwargs: Any) -> str:
 	if kwargs:
 		context_mesage = "".join(
 		    f"\t{key}={value}\n"
@@ -47,52 +47,52 @@ def construct_message(message: str, **kwargs: Any) -> str:
 
 
 def log(message: str, **kwargs: Any):
-	logger_print(_NO_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_NO_LEVEL, _construct_message(message, **kwargs))
 
 
 def logf(format_str: str, *args: Any):
-	logger_print(_NO_LEVEL, construct_message(format_str.format(*args)))
+	_logger_print(_NO_LEVEL, _construct_message(format_str.format(*args)))
 
 
 def debug(message: str, **kwargs: Any):
-	logger_print(_DEBUG_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_DEBUG_LEVEL, _construct_message(message, **kwargs))
 
 
 def debugf(format_str: str, *args: Any):
-	logger_print(_DEBUG_LEVEL, format_str.format(*args))
+	_logger_print(_DEBUG_LEVEL, format_str.format(*args))
 
 
 def info(message: str, **kwargs: Any):
-	logger_print(_INFO_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_INFO_LEVEL, _construct_message(message, **kwargs))
 
 
 def infof(format_str: str, *args: Any):
-	logger_print(_INFO_LEVEL, format_str.format(*args))
+	_logger_print(_INFO_LEVEL, format_str.format(*args))
 
 
 def warn(message: str, **kwargs: Any):
-	logger_print(_WARN_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_WARN_LEVEL, _construct_message(message, **kwargs))
 
 
 def warnf(format_str: str, *args: Any):
-	logger_print(_WARN_LEVEL, format_str.format(*args))
+	_logger_print(_WARN_LEVEL, format_str.format(*args))
 
 
 def error(message: str, **kwargs: Any):
-	logger_print(_ERROR_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_ERROR_LEVEL, _construct_message(message, **kwargs))
 
 
 def errorf(format_str: str, *args: Any):
-	logger_print(_ERROR_LEVEL, format_str.format(*args))
+	_logger_print(_ERROR_LEVEL, format_str.format(*args))
 
 
 def fatal(message: str, **kwargs: Any) -> NoReturn:
-	logger_print(_FATAL_LEVEL, construct_message(message, **kwargs))
+	_logger_print(_FATAL_LEVEL, _construct_message(message, **kwargs))
 	exit(1)
 
 
 def fatalf(format_str: str, *args: Any) -> NoReturn:
-	logger_print(_FATAL_LEVEL, format_str.format(*args))
+	_logger_print(_FATAL_LEVEL, format_str.format(*args))
 	exit(1)
 
 
