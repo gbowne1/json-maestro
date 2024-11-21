@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Union
 from jsonmaestro.jsonmaestro import load_json, load_jsonc, add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
+import jsonmaestro.logger as logger
 import sys
 import os
 import click
@@ -28,24 +29,24 @@ def interactive_mode(debug: bool):
 	# Sort the keys
 	if input("Do you want to sort keys? (y/n): ").lower() == 'y':
 		if debug:
-			print("[DEBUG]: sort_keys = y")
+			logger.debug("sort_keys = y")
 
 		sort_method = input(
 		    "Do you want to sort in ascending (a) or descending (d)? ").lower(
 		    )
 		if sort_method == 'a':
 			if debug:
-				print("[DEBUG]: order = a")
+				logger.debug("order = a")
 
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
 		elif sort_method == 'd':
 			if debug:
-				print("[DEBUG]: order = d")
+				logger.debug("order = d")
 
 			cleaned_data = sort_json_keys(cleaned_data, reverse=True)
 		else:
 			if debug:
-				print("[DEBUG]: order = {sort_method}")
+				logger.debug(f"order = {sort_method}")
 			print("Invalid choice. Defaulting to ascending order.")
 			cleaned_data = sort_json_keys(cleaned_data, reverse=False)
 
@@ -56,8 +57,7 @@ def interactive_mode(debug: bool):
 	try:
 		save_json(cleaned_data, output_file)
 	except Exception as e:
-		print(f"[ERROR]: Failed to save cleaned data because {str(e)}")
-		sys.exit(1)
+		logger.fatal(f"Failed to save cleaned data because {str(e)}")
 
 	print(f"Cleaned data saved to {output_file}")
 
@@ -93,14 +93,14 @@ def main(files: tuple[str], sort: str, interactive: bool, debug: bool):
 	else:
 		print("This will be printed")  # This will execute.
 	if debug:
-		print(f"[DEBUG] files: {files}")
-		print(f"[DEBUG] sort: {sort}")
-		print(f"[DEBUG] interactive: {interactive}")
+		logger.debug(f"files: {files}")
+		logger.debug(f"sort: {sort}")
+		logger.debug(f"interactive: {interactive}")
 
 	if len(files) == 0:
 		# pylance thinks this is unreachable, it is reachable hence we are checking the lenght of the tuple
 		if debug:
-			print(f"[DEBUG] length of files provided is 0")
+			logger.debug(f"length of files provided is 0")
 		interactive = True
 
 	# short to interactive mode in no files are provided
@@ -113,7 +113,7 @@ def main(files: tuple[str], sort: str, interactive: bool, debug: bool):
 	for file in files:
 		output_file = f"{os.path.splitext(file)[0]}_clean{os.path.splitext(file)[1]}"
 		if not os.path.exists(file):
-			print(f"[ERROR] filepath {file} does not exists")
+			logger.error(f"filepath {file} does not exists")
 			sys.exit(1)
 
 		content_map[file] = {}

@@ -6,3 +6,4 @@ from .jsonmaestro import sort_json_keys as sort_json_keys
 from .jsonmaestro import save_json as save_json
 
 from . import helpers as helpers
+from . import logger as logger
