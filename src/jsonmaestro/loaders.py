@@ -1,43 +1,53 @@
 import json
-from typing import Any, Dict
 
-from jsonmaestro.logger import fatal
+from typing import Any, Dict
 
 from jsonmaestro import remove_comments
 
 
-def load_jsonc(file_path: str) -> Dict[str, Any]:
-	"""Load JSONC from a file, skipping comments starting with // and handling control characters."""
-	try:
-		with open(file_path, 'r', encoding='utf-8') as file:
+class LoaderFormatError(Exception):
+	pass
+
+
+class LoaderValueError(Exception):
+	pass
+
+
+class Loader():
+	"""
+	A Loader class for loading loading files in various formats.
+	"""
+
+	def __init__(self, file_path: str):
+		self.file_path = file_path
+
+	def load_as(self, format: str) -> Dict[str, Any]:
+		"""
+		Load a file in a specific format.
+
+		Args:
+		format: The format of the file to load. Can be either "jsonc" or "json".
+
+		Returns:
+		The loaded file as a dictionary.
+
+		Raises:
+		LoaderFormatError: If the file format is not supported.
+		LoaderValueError: If the file is not a valid JSON or JSONC file.
+		"""
+
+		with open(self.file_path, 'r', encoding='utf-8') as file:
 			content = file.read()
 
-			cleaned_content = remove_comments(content)
+			if format == "jsonc":
+				content = remove_comments(content)
 
-			# Parse the remaining content as JSON
-			return json.loads(cleaned_content)
-
-	except json.JSONDecodeError as e:
-		fatal(
-		    f"Error: Invalid JSON format in the file. Error details: {str(e)}\n"
-		    + "Please check the contents of the file.")
-	except ValueError as e:
-		fatal(
-		    f"Error: Unexpected content in the file. Error details: {str(e)}\n"
-		    + "Please check the contents of the file.")
-
-
-def load_json(file_path: str) -> Dict[str, Any]:
-	"""Load json format compliant file."""
-	try:
-		with open(file_path, 'r', encoding='utf-8') as file:
-			content = file.read()
-			return json.loads(content)
-	except json.JSONDecodeError as e:
-		fatal(
-		    f"Error: Invalid JSON format in the file. Error details: {str(e)}\n"
-		    + "Please check the contents of the file.")
-	except ValueError as e:
-		fatal(
-		    f"Error: Unexpected content in the file. Error details: {str(e)}\n"
-		    + "Please check the contents of the file.")
+			if format == "jsonc" or format == "json":
+				try:
+					return json.loads(content)
+				except json.JSONDecodeError:
+					raise LoaderFormatError()
+				except ValueError:
+					raise LoaderValueError()
+			else:
+				raise LoaderFormatError(f"Unsupported format: {format}")
