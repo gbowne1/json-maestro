@@ -1,6 +1,7 @@
 import json
+import csv
 
-from typing import Any, Dict
+from typing import Any, Dict, List, Union
 
 from jsonmaestro import remove_comments
 
@@ -21,7 +22,9 @@ class Loader():
 	def __init__(self, file_path: str):
 		self.file_path = file_path
 
-	def load_as(self, format: str) -> Dict[str, Any]:
+	def load_as(
+	    self, format: str
+	) -> Union[Dict[str, Any], List[Dict[Union[str, Any], Union[str, Any]]]]:
 		"""
 		Load a file in a specific format.
 
@@ -49,5 +52,16 @@ class Loader():
 					raise LoaderFormatError()
 				except ValueError:
 					raise LoaderValueError()
+
+			if format == "csv":
+				csvFile = csv.DictReader(file)
+
+				rcontent: List[Dict[Union[str, Any], Union[str, Any]]] = []
+
+				for row in csvFile:
+					rcontent.append(row)
+
+				return rcontent
+
 			else:
 				raise LoaderFormatError(f"Unsupported format: {format}")
