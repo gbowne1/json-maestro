@@ -1,7 +1,8 @@
 from typing import Any, Dict, List, Union
-from jsonmaestro.jsonmaestro import load_json, load_jsonc, add_schema_keys, sort_json_keys, save_json
+from jsonmaestro.jsonmaestro import add_schema_keys, sort_json_keys, save_json
 import jsonmaestro.helpers as helpers
 import jsonmaestro.logger as logger
+from jsonmaestro.loader import Loader
 import sys
 import os
 import click
@@ -15,13 +16,13 @@ def interactive_mode(debug: bool):
 		print(f"[ERROR] filepath {input_file} does not exists")
 		sys.exit(1)
 
+	loader = Loader(input_file)
+
 	# Check if it's a VSCode settings.json file
 	if helpers.is_json(input_file):
-		load_function = load_json
+		original_data = loader.load_as("json")
 	else:
-		load_function = load_jsonc
-
-	original_data = load_function(input_file)
+		original_data = loader.load_as("jsonc")
 
 	# Process the data
 	cleaned_data = add_schema_keys(original_data)
@@ -117,11 +118,12 @@ def main(files: tuple[str], sort: str, interactive: bool, debug: bool):
 			sys.exit(1)
 
 		content_map[file] = {}
+		loader = Loader(file)
 
 		if helpers.is_json(file):
-			content_map[file]["source"] = load_json(file)
+			content_map[file]["source"] = loader.load_as("json")
 		else:
-			content_map[file]["source"] = load_jsonc(file)
+			content_map[file]["source"] = loader.load_as("jsonc")
 
 		content_map[file]["clean"] = add_schema_keys(
 		    content_map[file]["source"])
