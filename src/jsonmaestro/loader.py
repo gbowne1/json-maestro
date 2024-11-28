@@ -54,13 +54,15 @@ class Loader():
 		"""
 		Load the file as CSV.
 		"""
-		csvFile = csv.DictReader(self._open_file())
+		_file = self._open_file()
+		csvFile = csv.DictReader(_file)
 
 		content: List[Dict[Union[str, Any], Union[str, Any]]] = []
 
 		for row in csvFile:
 			content.append(row)
 
+		_file.close()
 		return content
 
 	def load_as(
