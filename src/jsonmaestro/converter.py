@@ -1,7 +1,13 @@
 from typing import Any, Dict, List, Union
 
+from jsonmaestro.logger import fatal
+
+from jsonmaestro.loader import Loader, LoaderFormatError, LoaderValueError
+
 _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
 
+# Table of allowed conversions
+# in fromat {source format: target format}
 _ALLOWED_CONVERTIONS = {"csv": "json"}
 
 
@@ -92,8 +98,18 @@ class Converter:
 				raise NotImplementedError(
 				    "String data conversion is not implemented")
 			elif self.file_path:
-				raise NotImplementedError(
-				    "File path data conversion is not implemented.")
+				loader = Loader(self.file_path)
+				try:
+					self.data = loader.load_as(self.source_format)
+				except LoaderFormatError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+				except LoaderValueError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+
 			else:
 				raise ConverterNoSourceDataError("No source data provided")
 
