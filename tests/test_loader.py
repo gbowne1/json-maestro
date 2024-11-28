@@ -19,3 +19,30 @@ def test_load_jsonc():
 		content = file.read()
 
 		assert json.loads(remove_comments(content)) == loader.load_as("jsonc")
+
+
+def test_load_csv():
+	loader = Loader("data/example.csv")
+	content = loader.load_as("csv")
+	assert content == [
+	    {
+	        "name": "John",
+	        "age": "30",
+	        "text_editor": "Sublime Text"
+	    },
+	    {
+	        "name": "Jane",
+	        "age": "25",
+	        "text_editor": "Visual Studio Code"
+	    },
+	    {
+	        "name": "Michael",
+	        "age": "35",
+	        "text_editor": "Neovim"
+	    },
+	    {
+	        "name": "Noah",
+	        "age": "40",
+	        "text_editor": "Atom"
+	    },
+	]
