@@ -55,11 +55,11 @@ class Loader():
 		Load the file as CSV.
 		"""
 		_file = self._open_file()
-		csvFile = csv.DictReader(_file)
+		csv_file = csv.DictReader(_file)
 
 		content: List[Dict[Union[str, Any], Union[str, Any]]] = []
 
-		for row in csvFile:
+		for row in csv_file:
 			content.append(row)
 
 		_file.close()
