@@ -1,7 +1,10 @@
+import csv
+import json
+import io
 from typing import Any, Dict, List, Union
 
+from jsonmaestro import remove_comments
 from jsonmaestro.logger import fatal
-
 from jsonmaestro.loader import Loader, LoaderFormatError, LoaderValueError
 
 _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
@@ -37,6 +40,7 @@ class Converter:
 	"""
 
 	file_path: Union[str, None]
+	loader: Union[Loader, None]
 	str_data: Union[str, None]
 	data: Union[None, Union[Dict[str, Any], List[Dict[Union[str, Any],
 	                                                  Union[str, Any]]]]]
@@ -56,6 +60,7 @@ class Converter:
 	):
 		if file_path is not None:
 			self.file_path = file_path
+			self.loader = Loader(file_path)
 		else:
 			self.file_path = None
 
@@ -83,48 +88,39 @@ class Converter:
 
 		self.target_format = target_format
 
-	def convert(self) -> Union[None, Dict[str, Any], List[Dict[str, Any]]]:
-		"""
-		Converts the data from the source format to the target format.
-		"""
-		if self.source_format not in _ALLOWED_CONVERTIONS or _ALLOWED_CONVERTIONS[
-		    self.source_format] != self.target_format:
-			raise ConverterIvalidConversionError(
-			    f"Conversion from {self.source_format} to {self.target_format} is not supported"
-			)
+	def _load_str(self):
+		assert self.str_data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.str_data is truthy
+		if self.source_format == "jsonc" or self.source_format == "json":
+			if self.source_format == "jsonc":
+				self.str_data = remove_comments(self.str_data)
 
-		if self.data is None:
-			if self.str_data:
-				raise NotImplementedError(
-				    "String data conversion is not implemented")
-			elif self.file_path:
-				loader = Loader(self.file_path)
-				try:
-					self.data = loader.load_as(self.source_format)
-				except LoaderFormatError as e:
-					fatal(
-					    f"Failed to load file {self.file_path} because {str(e)}"
-					)
-				except LoaderValueError as e:
-					fatal(
-					    f"Failed to load file {self.file_path} because {str(e)}"
-					)
+			self.data = json.loads(self.str_data)
 
-			else:
-				raise ConverterNoSourceDataError("No source data provided")
+		elif self.source_format == "csv":
+			csv_file = io.StringIO(self.str_data)
+			csv_data = csv.DictReader(csv_file)
 
-		if self.source_format == "csv" and self.target_format == "json":
-			return self._convert_csv_to_json()
+			self.data = []
+			for row in csv_data:
+				self.data.append(row)
+
 		else:
-			raise ConverterUnknownError("Unsupported conversion logic")
+			raise NotImplementedError("Unsupported string data conversion")
+
+	def _load_file(self):
+		"""
+		Loads the data from file at the given path (self.file_path).
+		"""
+
+		assert self.loader is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.file_path is truthy
+		self.data = self.loader.load_as(self.source_format)
 
 	def _convert_csv_to_json(self) -> Dict[str, Any]:
 		"""
 		Converts CSV data to JSON.
 		Uses the first value in each row as the key and the rest of the values as the value.
 		"""
-		if self.data is None:
-			raise ConverterNoSourceDataError("No source data provided")
+		assert self.data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
 		if isinstance(self.data, dict):
 			raise ConverterIncorrectSourceDataError(
 			    "Source data is a dictionary, expected a list of dictionaries")
@@ -146,3 +142,36 @@ class Converter:
 			data[json_key] = item
 
 		return data
+
+	def convert(self) -> Union[None, Dict[str, Any], List[Dict[str, Any]]]:
+		"""
+		Converts the data from the source format to the target format.
+		"""
+		if self.source_format not in _ALLOWED_CONVERTIONS or _ALLOWED_CONVERTIONS[
+		    self.source_format] != self.target_format:
+			raise ConverterIvalidConversionError(
+			    f"Conversion from {self.source_format} to {self.target_format} is not supported"
+			)
+
+		if self.data is None:
+			if self.str_data:
+				self._load_str()
+
+			elif self.file_path:
+				try:
+					self._load_file()
+				except LoaderFormatError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+				except LoaderValueError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+			else:
+				raise ConverterNoSourceDataError("No source data provided")
+
+		if self.source_format == "csv" and self.target_format == "json":
+			return self._convert_csv_to_json()
+		else:
+			raise ConverterUnknownError("Unsupported conversion logic")
