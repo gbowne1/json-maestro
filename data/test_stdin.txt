@@ -1,0 +1,6 @@
+example.csv csv json example.json
+example.csv csv jsonc example.jsonc
+example.csv json jsonc example.jsonc
+example.csv jsonc json example.json
+example.json jsonc json example.json
+example.jsonc json json example.json
