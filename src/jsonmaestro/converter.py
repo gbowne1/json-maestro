@@ -11,7 +11,7 @@ _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
 
 # Table of allowed conversions
 # in fromat {source format: target format}
-_ALLOWED_CONVERTIONS = {"csv": "json"}
+_ALLOWED_CONVERTIONS = {"csv": "json", "json": "csv"}
 
 
 class ConverterUnknownError(Exception):
@@ -115,6 +115,39 @@ class Converter:
 		assert self.loader is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.file_path is truthy
 		self.data = self.loader.load_as(self.source_format)
 
+	def _get_keys(self) -> List[str]:
+		"""
+		Gets the keys of the data.
+		"""
+		keys = set()  # type: ignore
+		for details in self.data.values():  # type: ignore
+			keys.update(details.keys())  # type: ignore
+		return keys  # type: ignore
+
+	def _convert_json_to_csv(
+	        self) -> List[Dict[Union[str, Any], Union[str, Any]]]:
+		data: List[Dict[Union[str, Any], Union[str, Any]]] = []
+
+		_keys = self._get_keys()
+
+		assert self.data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
+		assert isinstance(
+		    self.data, dict
+		)  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
+
+		for key in list(self.data.keys()):
+			csv_row: Dict[Union[str, Any], Union[str, Any]] = {}
+			csv_row["key"] = key
+
+			json_data = self.data[key]
+
+			for _key in _keys:
+				csv_row[_key] = json_data[_key]
+
+			data.append(csv_row)
+
+		return data
+
 	def _convert_csv_to_json(self) -> Dict[str, Any]:
 		"""
 		Converts CSV data to JSON.
@@ -143,6 +176,35 @@ class Converter:
 
 		return data
 
+	def _is_json_covertible(self) -> bool:
+		"""
+		Checks if the converter can convert the data to JSON.
+		"""
+		if self.data is None:
+			if self.str_data:
+				self._load_str()
+
+			elif self.file_path:
+				try:
+					self._load_file()
+				except LoaderFormatError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+				except LoaderValueError as e:
+					fatal(
+					    f"Failed to load file {self.file_path} because {str(e)}"
+					)
+
+		if self.data is None:
+			return False
+
+		reference_keys = set(self.data[next(iter(  # type: ignore
+		    self.data))].keys())
+		return all(
+		    set(details.keys()) == reference_keys  # type: ignore
+		    for details in self.data.values())  # type: ignore
+
 	def convertable(self) -> bool:
 		"""
 		Checks if the converter can convert the data.
@@ -152,6 +214,9 @@ class Converter:
 			return False
 
 		if self.target_format == _ALLOWED_CONVERTIONS[self.source_format]:
+			if self.target_format == "csv" and (self.source_format == "json" or
+			                                    self.source_format == "jsonc"):
+				return self._is_json_covertible()
 			return True
 		return False
 
@@ -185,5 +250,7 @@ class Converter:
 
 		if self.source_format == "csv" and self.target_format == "json":
 			return self._convert_csv_to_json()
+		if self.source_format == "json" and self.target_format == "csv":
+			return self._convert_json_to_csv()
 		else:
 			raise ConverterUnknownError("Unsupported conversion logic")
