@@ -143,6 +143,18 @@ class Converter:
 
 		return data
 
+	def convertable(self) -> bool:
+		"""
+		Checks if the converter can convert the data.
+		"""
+		if self.source_format not in _ALLOWED_CONVERTIONS or _ALLOWED_CONVERTIONS[
+		    self.source_format] != self.target_format:
+			return False
+
+		if self.target_format == _ALLOWED_CONVERTIONS[self.source_format]:
+			return True
+		return False
+
 	def convert(self) -> Union[None, Dict[str, Any], List[Dict[str, Any]]]:
 		"""
 		Converts the data from the source format to the target format.
