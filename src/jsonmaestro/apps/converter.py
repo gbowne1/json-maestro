@@ -1,7 +1,10 @@
 import sys
+import json
+import csv
+
 from typing import Dict, List
 
-from jsonmaestro.logger import infof
+from jsonmaestro.logger import infof, errorf
 from jsonmaestro.loader import Loader
 from jsonmaestro.converter import Converter
 
@@ -38,13 +41,31 @@ def main() -> None:
 		infof("Converting {} from {} to {}", conversion['file_in'],
 		      conversion['format_in'], conversion['format_out'])
 
-		loader = Loader(conversion['file_in'])
+		converter = Converter(file_path=None,
+		                      str_data=None,
+		                      data=Loader(conversion['file_in']).load_as(
+		                          conversion['format_in']),
+		                      source_format=conversion['format_in'],
+		                      target_format=conversion['format_out'])
 
-		_converter = Converter(file_path=None,
-		                       str_data=None,
-		                       data=loader.load_as(conversion['format_in']),
-		                       source_format=conversion['format_in'],
-		                       target_format=conversion['format_out'])
+		if not converter.convertable():
+			errorf("Conversion from {} to {} is not supported",
+			       conversion['format_in'], conversion['format_out'])
+			continue
+
+		with open(conversion['file_out'], "w") as file:
+			if converter.target_format == "csv":
+				data = converter.convert()
+				if data is not None and isinstance(data, list):
+					fieldnames = list(data[0].keys())
+
+					writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+					writer.writeheader()
+					writer.writerows(data)
+
+			elif converter.target_format == "json":
+				json.dump(converter.convert(), file)
 
 
 if __name__ == "__main__":

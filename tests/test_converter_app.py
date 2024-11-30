@@ -1,4 +1,5 @@
 import sys
+import os
 from io import StringIO
 from typing import Dict, List
 from jsonmaestro.apps.converter import read_input, main
@@ -58,11 +59,18 @@ def test_read_input_from_file():
 
 def test_main():
 	original_stdin = sys.stdin
-	test_input = "data/example.csv csv json data/example.json\n"
+	if not os.path.exists("out"):
+		os.mkdir("out")
+	test_input = "data/example.csv csv json out/example.json\n data/example.json json csv out/example.csv\n"
 	sys.stdin = StringIO(test_input)
 
 	main()
 
-	assert True
+	assert os.path.exists("out/example.json") is True
+	assert os.path.exists("out/example.csv") is True
 
 	sys.stdin = original_stdin
+
+	os.remove("out/example.json")
+	os.remove("out/example.csv")
+	os.rmdir("out")

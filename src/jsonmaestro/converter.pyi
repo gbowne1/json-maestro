@@ -22,6 +22,8 @@ class ConverterIvalidConversionError(Exception):
 
 
 class Converter:
+	source_format: str
+	target_format: str
 
 	def __init__(
 	    self,
