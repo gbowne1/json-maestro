@@ -1,3 +1,7 @@
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
 import json
 from jsonmaestro.loader import Loader
 from jsonmaestro import remove_comments

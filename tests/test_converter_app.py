@@ -1,5 +1,7 @@
 import sys
 import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
 from io import StringIO
 from typing import Dict, List
 from jsonmaestro.apps.converter import read_input, main

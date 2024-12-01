@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
+
 import pytest
 from unittest.mock import mock_open
 from jsonmaestro.helpers import is_json, get_format
