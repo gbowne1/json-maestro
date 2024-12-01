@@ -22,7 +22,7 @@ _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
 
 # Table of allowed conversions
 # in fromat {source format: target format}
-_ALLOWED_CONVERTIONS = {"csv": "json", "json": "csv"}
+_ALLOWED_CONVERTIONS = {"csv": "json", "json": "csv", "jsonc": "csv"}
 
 
 class ConverterUnknownError(Exception):
@@ -261,7 +261,8 @@ class Converter:
 
 		if self.source_format == "csv" and self.target_format == "json":
 			return self._convert_csv_to_json()
-		if self.source_format == "json" and self.target_format == "csv":
+		if (self.source_format == "json" and self.target_format == "csv") or (
+		    self.source_format == "jsonc" and self.target_format == "csv"):
 			return self._convert_json_to_csv()
 		else:
 			raise ConverterUnknownError("Unsupported conversion logic")
