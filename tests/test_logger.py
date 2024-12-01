@@ -1,3 +1,8 @@
+import sys
+import os
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
+
 import pytest
 from jsonmaestro.logger import (
     log,
@@ -12,13 +17,9 @@ from jsonmaestro.logger import (
     errorf,
     fatal,
     fatalf,
-    _RESET_COLOR,
-    _DEBUG_COLOR,
-    _INFO_COLOR,
-    _WARN_COLOR,
-    _ERROR_COLOR,
-    _FATAL_COLOR,
 )
+
+from jsonmaestro.contantants import DEBUG_COLOR as _DEBUG_COLOR, RESET_COLOR as _RESET_COLOR, INFO_COLOR as _INFO_COLOR, WARN_COLOR as _WARN_COLOR, ERROR_COLOR as _ERROR_COLOR, FATAL_COLOR as _FATAL_COLOR
 
 # Test cases for each log level with and without additional kwargs
 
