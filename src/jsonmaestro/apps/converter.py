@@ -2,8 +2,9 @@ import sys
 import json
 import csv
 import os
-from concurrent.futures import ThreadPoolExecutor
+import datetime
 
+from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, List
 
 from jsonmaestro.logger import infof, errorf
@@ -40,6 +41,9 @@ def convert(input_data: Dict[str, str]) -> None:
 	"""
 	Handles the conversion of a single input line.
 	"""
+
+	time_now = datetime.datetime.now()
+
 	infof("Converting {} from {} to {}", input_data['file_in'],
 	      input_data['format_in'], input_data['format_out'])
 
@@ -69,8 +73,14 @@ def convert(input_data: Dict[str, str]) -> None:
 		elif converter.target_format == "json":
 			json.dump(converter.convert(), file)
 
+	infof("Conversion from {} to {} for {} completed in {}",
+	      input_data['format_in'], input_data['format_out'],
+	      input_data['file_in'],
+	      datetime.datetime.now() - time_now)
+
 
 def main() -> None:
+	time_now = datetime.datetime.now()
 	input_data: List[Dict[str, str]] = read_input()
 
 	core_count = os.cpu_count()
@@ -82,6 +92,8 @@ def main() -> None:
 		infof("Using 1 thread")
 		for input_item in input_data:
 			convert(input_item)
+
+	infof("Conversion completed in {}", datetime.datetime.now() - time_now)
 
 
 if __name__ == "__main__":
