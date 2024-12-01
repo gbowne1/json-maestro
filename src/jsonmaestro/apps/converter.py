@@ -1,6 +1,8 @@
 import sys
 import json
 import csv
+import os
+from concurrent.futures import ThreadPoolExecutor
 
 from typing import Dict, List
 
@@ -34,38 +36,52 @@ def read_input() -> List[Dict[str, str]]:
 	return input_data
 
 
+def convert(input_data: Dict[str, str]) -> None:
+	"""
+	Handles the conversion of a single input line.
+	"""
+	infof("Converting {} from {} to {}", input_data['file_in'],
+	      input_data['format_in'], input_data['format_out'])
+
+	converter = Converter(file_path=None,
+	                      str_data=None,
+	                      data=Loader(input_data['file_in']).load_as(
+	                          input_data['format_in']),
+	                      source_format=input_data['format_in'],
+	                      target_format=input_data['format_out'])
+
+	if not converter.convertable():
+		errorf("Conversion from {} to {} is not supported",
+		       input_data['format_in'], input_data['format_out'])
+		return
+
+	with open(input_data['file_out'], "w") as file:
+		if converter.target_format == "csv":
+			data = converter.convert()
+			if data is not None and isinstance(data, list):
+				fieldnames = list(data[0].keys())
+
+				writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+				writer.writeheader()
+				writer.writerows(data)
+
+		elif converter.target_format == "json":
+			json.dump(converter.convert(), file)
+
+
 def main() -> None:
 	input_data: List[Dict[str, str]] = read_input()
 
-	for conversion in input_data:
-		infof("Converting {} from {} to {}", conversion['file_in'],
-		      conversion['format_in'], conversion['format_out'])
-
-		converter = Converter(file_path=None,
-		                      str_data=None,
-		                      data=Loader(conversion['file_in']).load_as(
-		                          conversion['format_in']),
-		                      source_format=conversion['format_in'],
-		                      target_format=conversion['format_out'])
-
-		if not converter.convertable():
-			errorf("Conversion from {} to {} is not supported",
-			       conversion['format_in'], conversion['format_out'])
-			continue
-
-		with open(conversion['file_out'], "w") as file:
-			if converter.target_format == "csv":
-				data = converter.convert()
-				if data is not None and isinstance(data, list):
-					fieldnames = list(data[0].keys())
-
-					writer = csv.DictWriter(file, fieldnames=fieldnames)
-
-					writer.writeheader()
-					writer.writerows(data)
-
-			elif converter.target_format == "json":
-				json.dump(converter.convert(), file)
+	core_count = os.cpu_count()
+	if core_count is not None and core_count - 2 > 2:
+		infof("Using {} threads", core_count - 2)
+		with ThreadPoolExecutor(max_workers=(core_count - 2)) as executor:
+			executor.map(convert, input_data)
+	else:
+		infof("Using 1 thread")
+		for input_item in input_data:
+			convert(input_item)
 
 
 if __name__ == "__main__":
