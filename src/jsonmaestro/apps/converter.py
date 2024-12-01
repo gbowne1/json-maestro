@@ -32,6 +32,12 @@ def read_input() -> List[Dict[str, str]]:
 		l["format_in"] = parts[1]
 		l["format_out"] = parts[2]
 		l["file_out"] = parts[3]
+
+		if len(parts) == 5:
+			l["write"] = parts[4]
+		else:
+			l["write"] = "stdout"
+
 		input_data.append(l)
 
 	return input_data
@@ -59,19 +65,23 @@ def convert(input_data: Dict[str, str]) -> None:
 		       input_data['format_in'], input_data['format_out'])
 		return
 
-	with open(input_data['file_out'], "w", encoding="utf-8") as file:
-		if converter.target_format == "csv":
-			data = converter.convert()
-			if data is not None and isinstance(data, list):
-				fieldnames = list(data[0].keys())
+	if input_data['write'] == "stdout":
+		infof("Writing to stdout not implemented yet")
 
-				writer = csv.DictWriter(file, fieldnames=fieldnames)
+	if input_data['write'] == "w":
+		with open(input_data['file_out'], "w", encoding="utf-8") as file:
+			if converter.target_format == "csv":
+				data = converter.convert()
+				if data is not None and isinstance(data, list):
+					fieldnames = list(data[0].keys())
 
-				writer.writeheader()
-				writer.writerows(data)
+					writer = csv.DictWriter(file, fieldnames=fieldnames)
 
-		elif converter.target_format == "json":
-			json.dump(converter.convert(), file)
+					writer.writeheader()
+					writer.writerows(data)
+
+			elif converter.target_format == "json":
+				json.dump(converter.convert(), file)
 
 	infof("Conversion from {} to {} for {} completed in {}",
 	      input_data['format_in'], input_data['format_out'],

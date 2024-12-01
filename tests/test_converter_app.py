@@ -48,6 +48,11 @@ def test_read_input_from_file():
 		l["format_in"] = parts[1]
 		l["format_out"] = parts[2]
 		l["file_out"] = parts[3]
+
+		if len(parts) == 5:
+			l["write"] = parts[4]
+		else:
+			l["write"] = "stdout"
 		in_data.append(l)
 
 	for i in range(len(data_out)):
@@ -55,6 +60,7 @@ def test_read_input_from_file():
 		assert data_out[i]["format_in"] == in_data[i]["format_in"]
 		assert data_out[i]["format_out"] == in_data[i]["format_out"]
 		assert data_out[i]["file_out"] == in_data[i]["file_out"]
+		assert data_out[i]["write"] == in_data[i]["write"]
 
 	sys.stdin = original_stdin
 
@@ -63,7 +69,7 @@ def test_main():
 	original_stdin = sys.stdin
 	if not os.path.exists("out"):
 		os.mkdir("out")
-	test_input = "data/example.csv csv json out/example.json\n data/example.json json csv out/example.csv\ndata/really_large.json jsonc csv out/really_large.csv\ndata/really_large.csv csv json out/really_large.json\n"
+	test_input = "data/example.csv csv json out/example.json w\n data/example.json json csv out/example.csv w\ndata/really_large.json jsonc csv out/really_large.csv w\ndata/really_large.csv csv json out/really_large.json w\n"
 	sys.stdin = StringIO(test_input)
 
 	main()
