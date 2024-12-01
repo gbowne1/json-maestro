@@ -1,11 +1,16 @@
 from typing import Any, NoReturn
 
-_NO_LEVEL = -1
-_DEBUG_LEVEL = 0
-_INFO_LEVEL = 1
-_WARN_LEVEL = 2
-_ERROR_LEVEL = 3
-_FATAL_LEVEL = 4
+try:
+	from .helpers import can_use_match
+except ImportError:  # for debugging
+	from helpers import can_use_match
+
+_NO_LEVEL: int = -1
+_DEBUG_LEVEL: int = 0
+_INFO_LEVEL: int = 1
+_WARN_LEVEL: int = 2
+_ERROR_LEVEL: int = 3
+_FATAL_LEVEL: int = 4
 
 _RESET_COLOR = "\033[0m"
 _DEBUG_COLOR = "\033[94m"  # Bright Blue
@@ -17,23 +22,42 @@ _FATAL_COLOR = "\033[95m"  # Bright Magenta
 
 # For match we need 3.10
 def _logger_print(level: int, message: str):
-	if level is _NO_LEVEL:
-		print(message)
-		return
-	if level is _DEBUG_LEVEL:
-		print(f"{_DEBUG_COLOR}[ DEBUG ]{_RESET_COLOR}: {message}")
-		return
-	if level is _INFO_LEVEL:
-		print(f"{_INFO_COLOR}[ INFO ]{_RESET_COLOR}: {message}")
-		return
-	if level is _WARN_LEVEL:
-		print(f"{_WARN_COLOR}[ WARN ]{_RESET_COLOR}: {message}")
-		return
-	if level is _ERROR_LEVEL:
-		print(f"{_ERROR_COLOR}[ ERROR ]{_RESET_COLOR}: {message}")
-		return
-	if level is _FATAL_LEVEL:
-		print(f"{_FATAL_COLOR}[ FATAL ]{_RESET_COLOR}: {message}")
+	if not can_use_match():
+		if level is _NO_LEVEL:
+			print(message)
+			return
+		if level is _DEBUG_LEVEL:
+			print(f"{_DEBUG_COLOR}[ DEBUG ]{_RESET_COLOR}: {message}")
+			return
+		if level is _INFO_LEVEL:
+			print(f"{_INFO_COLOR}[ INFO ]{_RESET_COLOR}: {message}")
+			return
+		if level is _WARN_LEVEL:
+			print(f"{_WARN_COLOR}[ WARN ]{_RESET_COLOR}: {message}")
+			return
+		if level is _ERROR_LEVEL:
+			print(f"{_ERROR_COLOR}[ ERROR ]{_RESET_COLOR}: {message}")
+			return
+		if level is _FATAL_LEVEL:
+			print(f"{_FATAL_COLOR}[ FATAL ]{_RESET_COLOR}: {message}")
+			return
+
+	match level:
+		case -1:
+			print(message)
+		case 0:
+			print(f"{_DEBUG_COLOR}[ DEBUG ]{_RESET_COLOR}: {message}")
+		case 1:
+			print(f"{_INFO_COLOR}[ INFO ]{_RESET_COLOR}: {message}")
+		case 2:
+			print(f"{_WARN_COLOR}[ WARN ]{_RESET_COLOR}: {message}")
+		case 3:
+			print(f"{_ERROR_COLOR}[ ERROR ]{_RESET_COLOR}: {message}")
+		case 4:
+			print(f"{_FATAL_COLOR}[ FATAL ]{_RESET_COLOR}: {message}")
+		case _:
+			# Default case if no level matches
+			print(message)
 
 
 def _construct_message(message: str, **kwargs: Any) -> str:
