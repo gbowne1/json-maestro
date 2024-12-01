@@ -4,7 +4,10 @@ import csv
 
 from typing import Any, Dict, List, Union
 
-from jsonmaestro import remove_comments
+try:
+	from .jsonmaestro import remove_comments
+except ImportError:  # for debugging
+	from jsonmaestro import remove_comments
 
 
 class LoaderFormatError(Exception):

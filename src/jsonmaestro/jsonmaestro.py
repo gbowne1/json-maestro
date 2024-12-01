@@ -1,6 +1,10 @@
-from jsonmaestro.logger import fatal
 import json
 from typing import Union, List, Dict, Any, cast, TypeVar
+
+try:
+	from .logger import fatal
+except ImportError:  # for debugging
+	from logger import fatal
 
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 

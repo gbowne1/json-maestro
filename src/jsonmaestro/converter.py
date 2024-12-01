@@ -3,9 +3,20 @@ import json
 import io
 from typing import Any, Dict, List, Union
 
-from jsonmaestro import remove_comments
-from jsonmaestro.logger import fatal
-from jsonmaestro.loader import Loader, LoaderFormatError, LoaderValueError
+try:
+	from .jsonmaestro import remove_comments
+except ImportError:  # for debugging
+	from jsonmaestro import remove_comments
+
+try:
+	from .logger import fatal
+except ImportError:  # for debugging
+	from logger import fatal
+
+try:
+	from .loader import Loader, LoaderFormatError, LoaderValueError
+except ImportError:  # for debugging
+	from loader import Loader, LoaderFormatError, LoaderValueError
 
 _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
 
