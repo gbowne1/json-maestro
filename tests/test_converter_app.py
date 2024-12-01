@@ -63,16 +63,20 @@ def test_main():
 	original_stdin = sys.stdin
 	if not os.path.exists("out"):
 		os.mkdir("out")
-	test_input = "data/example.csv csv json out/example.json\n data/example.json json csv out/example.csv\n"
+	test_input = "data/example.csv csv json out/example.json\n data/example.json json csv out/example.csv\ndata/really_large.json jsonc csv out/really_large.csv\ndata/really_large.csv csv json out/really_large.json\n"
 	sys.stdin = StringIO(test_input)
 
 	main()
 
 	assert os.path.exists("out/example.json") is True
 	assert os.path.exists("out/example.csv") is True
+	assert os.path.exists("out/really_large.csv") is True
+	assert os.path.exists("out/really_large.json") is True
 
 	sys.stdin = original_stdin
 
 	os.remove("out/example.json")
 	os.remove("out/example.csv")
+	os.remove("out/really_large.csv")
+	os.remove("out/really_large.json")
 	os.rmdir("out")
