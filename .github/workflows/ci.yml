@@ -55,7 +55,7 @@ jobs:
             - name: Run tests
               run: |
                   source ./venv/bin/activate
-                  pytest
+                  pytest -vv
 
     test-3-10:
         needs: test-3-9
@@ -85,7 +85,7 @@ jobs:
             - name: Run tests
               run: |
                   source ./venv/bin/activate
-                  pytest
+                  pytest -vv
 
     test-3-11:
         needs: test-3-10
@@ -115,7 +115,7 @@ jobs:
             - name: Run tests
               run: |
                   source ./venv/bin/activate
-                  pytest
+                  pytest -vv
 
     test-3-12:
         needs: test-3-11
@@ -145,7 +145,7 @@ jobs:
             - name: Run tests
               run: |
                   source ./venv/bin/activate
-                  pytest
+                  pytest -vv
 
     test-3-13:
         needs: test-3-12
@@ -175,7 +175,7 @@ jobs:
             - name: Run tests
               run: |
                   source ./venv/bin/activate
-                  pytest
+                  pytest -vv
 
     pip-install-3-9:
         needs: test-3-9

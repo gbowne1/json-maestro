@@ -112,6 +112,9 @@ def test_main():
 	runner = CliRunner()
 	result = runner.invoke(main, input=test_input)
 
+	print("")  # for cleaner output
+	print(result.output)
+
 	assert result.exit_code == 0
 
 	assert os.path.exists("out/example.json") is True
