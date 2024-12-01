@@ -26,12 +26,6 @@ class Loader():
 	def __init__(self, file_path: str):
 		self.file_path = file_path
 
-	def _open_file(self) -> TextIOWrapper:
-		"""
-		Open the file.
-		"""
-		return open(self.file_path, 'r', encoding='utf-8')
-
 	def _read_to_string(self) -> str:
 		"""
 		Read the file to a string.
@@ -57,16 +51,16 @@ class Loader():
 		"""
 		Load the file as CSV.
 		"""
-		_file = self._open_file()
-		csv_file = csv.DictReader(_file)
+		with open(self.file_path, 'r', encoding='utf-8') as file:
+			csv_file = csv.DictReader(file)
 
-		content: List[Dict[Union[str, Any], Union[str, Any]]] = []
+			content: List[Dict[Union[str, Any], Union[str, Any]]] = []
 
-		for row in csv_file:
-			content.append(row)
+			for row in csv_file:
+				content.append(row)
 
-		_file.close()
-		return content
+			file.close()
+			return content
 
 	def load_as(
 	    self, format: str

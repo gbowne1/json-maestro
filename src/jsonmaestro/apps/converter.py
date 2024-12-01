@@ -59,7 +59,7 @@ def convert(input_data: Dict[str, str]) -> None:
 		       input_data['format_in'], input_data['format_out'])
 		return
 
-	with open(input_data['file_out'], "w") as file:
+	with open(input_data['file_out'], "w", encoding="utf-8") as file:
 		if converter.target_format == "csv":
 			data = converter.convert()
 			if data is not None and isinstance(data, list):
