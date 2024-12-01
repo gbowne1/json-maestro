@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
 from io import StringIO
 from typing import Dict, List
-from jsonmaestro.apps.converter import read_input, main
+from jsonmaestro.apps.converter import read_input, read_file_input, main
 
 
 def test_read_input():
@@ -21,6 +21,40 @@ def test_read_input():
 	assert data_out[0]["file_out"] == "example.json"
 
 	sys.stdin = original_stdin
+
+
+def test_read_file_input():
+
+	with open("data/test_file_input.txt", "r") as file:
+		test_input = file.readlines()
+
+	control_data: List[Dict[str, str]] = []
+
+	for line in test_input:
+		line = line.strip()
+		l: Dict[str, str] = {}
+		parts = line.split(" ")
+		l["file_in"] = parts[0]
+		l["format_in"] = parts[1]
+		l["format_out"] = parts[2]
+		l["file_out"] = parts[3]
+
+		if len(parts) == 5:
+			l["write"] = parts[4]
+		else:
+			l["write"] = "stdout"
+		control_data.append(l)
+
+	data_out = read_file_input(test_input)
+
+	assert len(data_out) == len(control_data)
+
+	for i in range(len(data_out)):
+		assert data_out[i]["file_in"] == control_data[i]["file_in"]
+		assert data_out[i]["format_in"] == control_data[i]["format_in"]
+		assert data_out[i]["format_out"] == control_data[i]["format_out"]
+		assert data_out[i]["file_out"] == control_data[i]["file_out"]
+		assert data_out[i]["write"] == control_data[i]["write"]
 
 
 def test_read_input_from_file():
