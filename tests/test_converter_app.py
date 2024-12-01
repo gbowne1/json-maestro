@@ -4,6 +4,9 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + "/../src")
 from io import StringIO
 from typing import Dict, List
+
+from click.testing import CliRunner
+
 from jsonmaestro.apps.converter import read_input, read_file_input, main
 
 
@@ -106,7 +109,10 @@ def test_main():
 	test_input = "data/example.csv csv json out/example.json w\n data/example.json json csv out/example.csv w\ndata/really_large.json jsonc csv out/really_large.csv w\ndata/really_large.csv csv json out/really_large.json w\n"
 	sys.stdin = StringIO(test_input)
 
-	main(input_file=None)
+	runner = CliRunner()
+	result = runner.invoke(main, input=test_input)
+
+	assert result.exit_code == 0
 
 	assert os.path.exists("out/example.json") is True
 	assert os.path.exists("out/example.csv") is True

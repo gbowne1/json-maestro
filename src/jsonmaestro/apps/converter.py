@@ -57,9 +57,6 @@ def read_input() -> List[Dict[str, str]]:
 	"""
 	input_data: List[Dict[str, str]] = []
 
-	if sys.stdin.isatty():
-		# If stdin is a terminal, there is no data coming from stdin
-		return input_data
 
 	for line in sys.stdin:
 		line = line.strip()
@@ -143,7 +140,7 @@ def main(input_file: Union[str, None]) -> None:
 		with open(input_file, "r", encoding="utf-8") as file:
 			file_data = file.readlines()
 			input_data = read_file_input(file_data)
-	else:
+	elif not sys.stdin.isatty():
 		input_data = read_input()
 
 	if not input_data:
