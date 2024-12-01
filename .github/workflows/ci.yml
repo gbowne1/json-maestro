@@ -51,7 +51,6 @@ jobs:
                   source ./venv/bin/activate
                   pip install -r dev.requirements
                   pip install -r requirements.txt
-                  pip install .
 
             - name: Run tests
               run: |
@@ -82,7 +81,6 @@ jobs:
                   source ./venv/bin/activate
                   pip install -r dev.requirements
                   pip install -r requirements.txt
-                  pip install .
 
             - name: Run tests
               run: |
@@ -113,7 +111,6 @@ jobs:
                   source ./venv/bin/activate
                   pip install -r dev.requirements
                   pip install -r requirements.txt
-                  pip install .
 
             - name: Run tests
               run: |
@@ -144,7 +141,6 @@ jobs:
                   source ./venv/bin/activate
                   pip install -r dev.requirements
                   pip install -r requirements.txt
-                  pip install .
 
             - name: Run tests
               run: |
@@ -175,7 +171,6 @@ jobs:
                   source ./venv/bin/activate
                   pip install -r dev.requirements
                   pip install -r requirements.txt
-                  pip install .
 
             - name: Run tests
               run: |
