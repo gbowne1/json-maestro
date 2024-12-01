@@ -57,6 +57,10 @@ def read_input() -> List[Dict[str, str]]:
 	"""
 	input_data: List[Dict[str, str]] = []
 
+	if sys.stdin.isatty():
+		# If stdin is a terminal, there is no data coming from stdin
+		return input_data
+
 	for line in sys.stdin:
 		line = line.strip()
 		l: Dict[str, str] = {}
@@ -124,14 +128,15 @@ def convert(input_data: Dict[str, str]) -> None:
 
 @click.command()
 @click.option("-i",
-              "--input",
               "--input-file",
+              "--input",
               required=False,
               default=None,
-              type=str)
+              type=str,
+              help="Path to input file (default: stdin)")
 def main(input_file: Union[str, None]) -> None:
 	time_now = datetime.datetime.now()
-	input_data: List[Dict[str, str]] = []
+	input_data: Union[List[Dict[str, str]], None] = None
 
 	if input_file is not None:
 		infof("Reading input from file {}", input_file)
@@ -140,6 +145,10 @@ def main(input_file: Union[str, None]) -> None:
 			input_data = read_file_input(file_data)
 	else:
 		input_data = read_input()
+
+	if not input_data:
+		errorf("No input provided")
+		exit(1)
 
 	core_count = os.cpu_count()
 	if core_count is not None and core_count - 2 > 2:
