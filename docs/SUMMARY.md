@@ -17,6 +17,7 @@
 - [Helpers](./api/helpers.md)
 - [Logger](./api/logger.md)
 - [Loader](./api/loader.md)
+- [Converter](./api/converter.md)
 
 
 # Contributing
