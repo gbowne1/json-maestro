@@ -164,3 +164,4 @@ pyrightconfig.json
 
 # docs build directory
 book
+docs/LICENSE

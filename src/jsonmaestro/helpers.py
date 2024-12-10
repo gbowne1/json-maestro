@@ -1,4 +1,5 @@
 import json
+import sys
 
 _JSON_FORMAT: str = "json"
 _JSONC_FORMAT: str = "jsonc"
@@ -17,3 +18,7 @@ def get_format(file_path: str) -> str:
 	if is_json(file_path=file_path):
 		return _JSON_FORMAT
 	return _JSONC_FORMAT
+
+
+def can_use_match() -> bool:
+	return sys.version_info >= (3, 10)
