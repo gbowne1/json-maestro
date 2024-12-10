@@ -16,6 +16,7 @@
 - [JsonMaestro](./api/jsonmaestro.md)
 - [Helpers](./api/helpers.md)
 - [Logger](./api/logger.md)
+- [Loader](./api/loader.md)
 
 
 # Contributing
