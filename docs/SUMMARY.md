@@ -14,9 +14,7 @@
 
 - [API](./api/index.md)
 - [JsonMaestro](./api/jsonmaestro.md)
-	- [Examples](./api/jsonmaestro-examples.md)
 - [Helpers](./api/helpers.md)
-    - [Examples](./api/helpers-examples.md)
 - [Logger](./api/logger.md)
 
 
