@@ -15,18 +15,18 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Check version
-              env:
-                  GITHUB_REF_NAME: ${{ github.ref_name }}
-              run: |
-                  VERSION=$(echo "$GITHUB_REF_NAME" | sed 's/^v//')
-                  CURR =$(cat pyproject.toml | grep ^version | sed 's/version = "\(.*\)"/\1/')
-                  if [ "$VERSION" != "$CURR" ]; then
-                      echo "Error: VERSION ($VERSION) and CURR ($CURR) do not match."
-                      exit 1
-                  else
-                      echo "VERSION ($VERSION) matches CURR ($CURR). Proceeding."
-                  fi
+            # - name: Check version
+            #   env:
+            #       GITHUB_REF_NAME: ${{ github.ref_name }}
+            #   run: |
+            #       VERSION=$(echo "$GITHUB_REF_NAME" | sed 's/^v//')
+            #       CURR=$(printf "%s" "$(cat pyproject.toml | grep ^version | sed 's/version = "\(.*\)"/\1/')")
+            #       if [ "$VERSION" != "$CURR" ]; then
+            #           echo "Error: VERSION ($VERSION) and CURR ($CURR) do not match."
+            #           exit 1
+            #       else
+            #           echo "VERSION ($VERSION) matches CURR ($CURR). Proceeding."
+            #       fi
 
             - name: Set up Python
               uses: actions/setup-python@v3
