@@ -100,7 +100,9 @@ class Converter:
 		self.target_format = target_format
 
 	def _load_str(self):
-		assert self.str_data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.str_data is truthy
+		if self.str_data is None:
+			# TODO(shoshta): add internal instrumentation
+			fatal("No string data provided")
 		if self.source_format == "jsonc" or self.source_format == "json":
 			if self.source_format == "jsonc":
 				self.str_data = remove_comments(self.str_data)
@@ -123,7 +125,9 @@ class Converter:
 		Loads the data from file at the given path (self.file_path).
 		"""
 
-		assert self.loader is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.file_path is truthy
+		if self.loader is None:
+			# TODO(shoshta): add internal instrumentation
+			fatal("No file path provided")
 		self.data = self.loader.load_as(self.source_format)
 
 	def _get_keys(self) -> List[str]:
@@ -141,10 +145,12 @@ class Converter:
 
 		_keys = self._get_keys()
 
-		assert self.data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
-		assert isinstance(
-		    self.data, dict
-		)  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
+		if self.data is None:
+			# TODO(shoshta): add internal instrumentation
+			fatal("No data provided")
+		if not isinstance(self.data, dict):
+			# TODO(shoshta): add internal instrumentation
+			fatal("Data is not a dictionary")
 
 		for key in list(self.data.keys()):
 			csv_row: Dict[Union[str, Any], Union[str, Any]] = {}
@@ -164,7 +170,9 @@ class Converter:
 		Converts CSV data to JSON.
 		Uses the first value in each row as the key and the rest of the values as the value.
 		"""
-		assert self.data is not None  # assert so that mypy doesn't complain -> Cant be None since we are checking in the convert method if self.data is loaded
+		if self.data is None:
+			# TODO(shoshta): add internal instrumentation
+			fatal("No data provided")
 		if isinstance(self.data, dict):
 			raise ConverterIncorrectSourceDataError(
 			    "Source data is a dictionary, expected a list of dictionaries")
