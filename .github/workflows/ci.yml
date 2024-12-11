@@ -10,6 +10,7 @@ on:
                 "pyproject.toml",
                 "requirements.txt",
                 "dev.requirements",
+                ".github/workflows/ci.yml",
             ]
     pull_request:
         branches: ["master"]
@@ -20,6 +21,7 @@ on:
                 "pyproject.toml",
                 "requirements.txt",
                 "dev.requirements",
+                ".github/workflows/ci.yml",
             ]
 
 # This ensures that previous jobs for the PR are canceled when the PR is

@@ -3,10 +3,10 @@ name: docs
 on:
     push:
         branches: ["master"]
-        paths: ["docs/**"]
+        paths: ["docs/**", ".github/workflows/docs.yml"]
     pull_request:
         branches: ["master"]
-        paths: ["docs/**"]
+        paths: ["docs/**", ".github/workflows/docs.yml"]
 
 # This ensures that previous jobs for the PR are canceled when the PR is
 # updated.
