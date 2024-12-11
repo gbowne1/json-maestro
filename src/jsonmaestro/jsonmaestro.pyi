@@ -3,14 +3,6 @@ from typing import Any, Dict, List, TypeVar, Union
 T = TypeVar('T', bound=Union[Dict[str, Any], List[Any], Any])
 
 
-def load_jsonc(file_path: str) -> Dict[str, Any]:
-	...
-
-
-def load_json(file_path: str) -> Dict[str, Any]:
-	...
-
-
 def remove_comments(jsonc_content: str) -> str:
 	...
 

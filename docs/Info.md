@@ -1,20 +1,24 @@
 # Info
 
-JSON Maestro can be used in two ways:
+JSON Mastro ships be default with few tools that can be used as standalone applications and as a library.
 
-1. As a command line tool
-2. As a Python library
+## Tools
 
-## Command Line Tool
+### Cli Tool
 
-The command line tool is preconfigured to work given ceratins expectations.
+Supports cleaning up JSON and JSONC files.
 
-There are two supported ways of installing the command line tool:
+### Converter application
 
-1. Installing the package from PyPI
-2. Building the package from source
+The application can be used to convert between different formats.
 
-For detailed instructions on how to install the tool, please refer to the [Installation](./Installation.md) section.
+Currently, the following conversions are supported:
+
+- JSON to CSV
+- CSV to JSON
+
+Application uses stdin and stdout for input and output.
+Ooutput can be redirected to a file by adding w to the end of the instruction.
 
 ## Python Library
 
