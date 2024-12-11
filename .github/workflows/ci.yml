@@ -37,6 +37,7 @@ jobs:
                 python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
                 os: [ubuntu-latest, macos-latest, windows-latest]
             fail-fast: true
+            max-parallel: 3
 
         runs-on: ubuntu-latest
         steps:
@@ -68,6 +69,7 @@ jobs:
                 python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
                 os: [ubuntu-latest, macos-latest, windows-latest]
             fail-fast: true
+            max-parallel: 3
 
         runs-on: ubuntu-latest
         steps:
