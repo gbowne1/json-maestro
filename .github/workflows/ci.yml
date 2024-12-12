@@ -57,7 +57,7 @@ jobs:
                   path: ~/.cache/pip
                   key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
                   restore-keys: |
-                      ${{ runner.os }}-pip${{ matrix.python-version }}-
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
 
             - uses: actions/cache@v4
               id: restore_cache_macos
@@ -141,7 +141,7 @@ jobs:
                   path: ~/.cache/pip
                   key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
                   restore-keys: |
-                      ${{ runner.os }}-pip${{ matrix.python-version }}-
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
 
             - uses: actions/cache@v4
               id: restore_cache_macos
