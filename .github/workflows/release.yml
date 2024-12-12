@@ -182,7 +182,8 @@ jobs:
               with:
                   name: Release ${{ github.ref_name }}
                   body_path: CHANGELOG.md
-                  files: dist-linux/*
+                  files: |
+                      dist-linux/*
                       dist-macos/*
                       dist-windows/*
                   make_latest: true
