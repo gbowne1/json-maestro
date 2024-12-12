@@ -34,6 +34,7 @@ jobs:
                   key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
             - name: Install mdbook
+              if: steps.restore_cache.outputs.cache-hit != 'true'
               run: cargo install --git https://github.com/rust-lang/mdBook.git mdbook
 
             - name: Build docs
