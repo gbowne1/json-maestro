@@ -13,49 +13,60 @@ def remove_comments(jsonc_content: str) -> str:
 	"""
 		Removes the comments from source
 	"""
-	inside_string = False
-	inside_block_comment = False
-	inside_line_comment = False
+	normal: int = 0
+	string: int = 1
+	line_comment: int = 2
+	block_comment: int = 3
+
 	result: List[str] = []
+	state: int = normal
 	i = 0
 	length = len(jsonc_content)
 
 	while i < length:
 		char = jsonc_content[i]
-		next_char = jsonc_content[i + 1] if i + 1 < length else ''
+		next_char = jsonc_content[i + 1] if i + 1 < length else ""
 
-		# Toggle the string state if encountering a double quote (and not escaping it)
-		if char == '"' and not inside_block_comment and not inside_line_comment:
-			if i == 0 or jsonc_content[i - 1] != '\\':
-				inside_string = not inside_string
-
-		# Start of block comment (/*)
-		if not inside_string and not inside_block_comment and not inside_line_comment and char == '/' and next_char == '*':
-			inside_block_comment = True
-			i += 2  # Skip the /* characters
-			continue
-
-		# End of block comment (*/)
-		if inside_block_comment and char == '*' and next_char == '/':
-			inside_block_comment = False
-			i += 2  # Skip the */ characters
-			continue
-
-		# Start of line comment (//)
-		if not inside_string and not inside_block_comment and not inside_line_comment and char == '/' and next_char == '/':
-			inside_line_comment = True
-			i += 2  # Skip the // characters
-			continue
-
-		# End of line comment (at newline)
-		if inside_line_comment and char == '\n':
-			inside_line_comment = False
-			result.append(char)  # Keep the newline
+		# Handle string state
+		if state == string:
+			if char == '"' and jsonc_content[i - 1] != '\\':  # End of string
+				state = normal
+			result.append(char)
 			i += 1
 			continue
 
-		# If not inside a comment, append the character to the result
-		if not inside_block_comment and not inside_line_comment:
+		# Handle block comment state
+		if state == block_comment:
+			if char == '*' and next_char == '/':  # End of block comment
+				state = normal
+				i += 2
+			else:
+				i += 1
+			continue
+
+		# Handle line comment state
+		if state == line_comment:
+			if char == '\n':  # End of line comment
+				state = normal
+				result.append(char)
+			i += 1
+			continue
+
+		# Handle normal state
+		if state == normal:
+			if char == '"' and jsonc_content[i - 1] != '\\':  # Start of string
+				state = string
+				result.append(char)
+				i += 1
+				continue
+			if char == '/' and next_char == '*':  # Start of block comment
+				state = block_comment
+				i += 2
+				continue
+			if char == '/' and next_char == '/':  # Start of line comment
+				state = line_comment
+				i += 2
+				continue
 			result.append(char)
 
 		i += 1
