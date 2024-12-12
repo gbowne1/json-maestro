@@ -129,14 +129,74 @@ jobs:
               uses: actions/setup-python@v3
               with:
                   python-version: ${{ matrix.python-version }}
+
+            - name: Setup Venv
+              run: |
+                  python -m venv ./venv
+
+            - uses: actions/cache@v4
+              id: restore_cache_linux
+              if: startsWith(runner.os, 'Linux')
+              with:
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip${{ matrix.python-version }}-
+
+            - uses: actions/cache@v4
+              id: restore_cache_macos
+              if: startsWith(runner.os, 'macOS')
+              with:
+                  path: ~/Library/Caches/pip
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+            - uses: actions/cache@v4
+              id: restore_cache_windows
+              if: startsWith(runner.os, 'Windows')
+              with:
+                  path: ~\AppData\Local\pip\Cache
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
             - name: Install dependencies
               run: |
+                  source ./venv/bin/activate
                   python -m pip install --upgrade pip
                   pip install -r requirements.txt
                   pip install -r dev.requirements
+
             - name: Install build deps
               run: python3 -m pip install --upgrade build
+
             - name: Build
               run: python3 -m build
+
             - name: Install
               run: python3 -m pip install .
+
+            - uses: actions/cache@v4
+              if: startsWith(runner.os, 'Linux') && steps.restore_cache_linux.outputs.cache-hit != 'true'
+              with:
+                  path: ~/.cache/pip
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+            - uses: actions/cache@v4
+              if: startsWith(runner.os, 'macOS') && steps.restore_cache_macos.outputs.cache-hit != 'true'
+              with:
+                  path: ~/Library/Caches/pip
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
+
+            - uses: actions/cache@v4
+              if: startsWith(runner.os, 'Windows') && steps.restore_cache_windows.outputs.cache-hit != 'true'
+              with:
+                  path: ~\AppData\Local\pip\Cache
+                  key: ${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('**/requirements.txt', '**/dev.requirements') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pip-${{ matrix.python-version }}-
