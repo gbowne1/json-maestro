@@ -17,7 +17,7 @@ class ConverterIncorrectSourceDataError(Exception):
 	pass
 
 
-class ConverterIvalidConversionError(Exception):
+class ConverterInvalidConversionError(Exception):
 	pass
 
 

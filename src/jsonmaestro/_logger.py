@@ -1,7 +1,7 @@
 try:
-	from .contantants import DEBUG_COLOR, ERROR_COLOR, FATAL_COLOR, INFO_COLOR, RESET_COLOR, WARN_COLOR
+	from .constants import DEBUG_COLOR, ERROR_COLOR, FATAL_COLOR, INFO_COLOR, RESET_COLOR, WARN_COLOR
 except ImportError:
-	from contantants import DEBUG_COLOR, ERROR_COLOR, FATAL_COLOR, INFO_COLOR, RESET_COLOR, WARN_COLOR
+	from constants import DEBUG_COLOR, ERROR_COLOR, FATAL_COLOR, INFO_COLOR, RESET_COLOR, WARN_COLOR
 
 
 def logger_print(level: int, message: str) -> None:

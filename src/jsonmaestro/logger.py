@@ -17,7 +17,7 @@ else:
 		from _logger39 import logger_print as _logger_print
 
 try:
-	from .contantants import (
+	from .constants import (
 	    DEBUG_LEVEL,
 	    ERROR_LEVEL,
 	    FATAL_LEVEL,
@@ -26,7 +26,7 @@ try:
 	    WARN_LEVEL,
 	)
 except ImportError:  # for debugging
-	from contantants import (
+	from constants import (
 	    DEBUG_LEVEL,
 	    ERROR_LEVEL,
 	    FATAL_LEVEL,

@@ -21,8 +21,8 @@ except ImportError:  # for debugging
 _ALLOWED_FORMATS = ["jsonc", "json", "csv"]
 
 # Table of allowed conversions
-# in fromat {source format: target format}
-_ALLOWED_CONVERTIONS = {"csv": "json", "json": "csv", "jsonc": "csv"}
+# in format {source format: target format}
+_ALLOWED_CONVERSIONS = {"csv": "json", "json": "csv", "jsonc": "csv"}
 
 
 class ConverterUnknownError(Exception):
@@ -41,7 +41,7 @@ class ConverterIncorrectSourceDataError(Exception):
 	pass
 
 
-class ConverterIvalidConversionError(Exception):
+class ConverterInvalidConversionError(Exception):
 	pass
 
 
@@ -195,7 +195,7 @@ class Converter:
 
 		return data
 
-	def _is_json_covertible(self) -> bool:
+	def _is_json_convertible(self) -> bool:
 		"""
 		Checks if the converter can convert the data to JSON.
 		"""
@@ -228,14 +228,14 @@ class Converter:
 		"""
 		Checks if the converter can convert the data.
 		"""
-		if self.source_format not in _ALLOWED_CONVERTIONS or _ALLOWED_CONVERTIONS[
+		if self.source_format not in _ALLOWED_CONVERSIONS or _ALLOWED_CONVERSIONS[
 		    self.source_format] != self.target_format:
 			return False
 
-		if self.target_format == _ALLOWED_CONVERTIONS[self.source_format]:
+		if self.target_format == _ALLOWED_CONVERSIONS[self.source_format]:
 			if self.target_format == "csv" and (self.source_format == "json" or
 			                                    self.source_format == "jsonc"):
-				return self._is_json_covertible()
+				return self._is_json_convertible()
 			return True
 		return False
 
@@ -243,9 +243,9 @@ class Converter:
 		"""
 		Converts the data from the source format to the target format.
 		"""
-		if self.source_format not in _ALLOWED_CONVERTIONS or _ALLOWED_CONVERTIONS[
+		if self.source_format not in _ALLOWED_CONVERSIONS or _ALLOWED_CONVERSIONS[
 		    self.source_format] != self.target_format:
-			raise ConverterIvalidConversionError(
+			raise ConverterInvalidConversionError(
 			    f"Conversion from {self.source_format} to {self.target_format} is not supported"
 			)
 

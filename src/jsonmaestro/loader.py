@@ -20,7 +20,7 @@ class LoaderValueError(Exception):
 
 class Loader():
 	"""
-	A Loader class for loading loading files in various formats.
+	A Loader class for loading files in various formats.
 	"""
 
 	def __init__(self, file_path: str):
