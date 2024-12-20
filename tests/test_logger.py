@@ -19,11 +19,10 @@ from jsonmaestro.logger import (
     fatalf,
 )
 
-from jsonmaestro.contantants import DEBUG_COLOR as _DEBUG_COLOR, RESET_COLOR as _RESET_COLOR, INFO_COLOR as _INFO_COLOR, WARN_COLOR as _WARN_COLOR, ERROR_COLOR as _ERROR_COLOR, FATAL_COLOR as _FATAL_COLOR
+from jsonmaestro.constants import DEBUG_COLOR as _DEBUG_COLOR, RESET_COLOR as _RESET_COLOR, INFO_COLOR as _INFO_COLOR, WARN_COLOR as _WARN_COLOR, ERROR_COLOR as _ERROR_COLOR, FATAL_COLOR as _FATAL_COLOR
+
 
 # Test cases for each log level with and without additional kwargs
-
-
 def test_log_no_level(capsys):
 	log("Test message")
 	captured = capsys.readouterr()
