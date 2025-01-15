@@ -6,19 +6,19 @@ _JSONC_FORMAT: str = "jsonc"
 
 
 def is_json(file_path: str) -> bool:
-	try:
-		with open(file=file_path, mode='r') as file:
-			json.load(file)
-		return True
-	except (json.JSONDecodeError, ValueError):
-		return False
+    try:
+        with open(file=file_path, mode='r') as file:
+            json.load(file)
+        return True
+    except (json.JSONDecodeError, ValueError):
+        return False
 
 
 def get_format(file_path: str) -> str:
-	if is_json(file_path=file_path):
-		return _JSON_FORMAT
-	return _JSONC_FORMAT
+    if is_json(file_path=file_path):
+        return _JSON_FORMAT
+    return _JSONC_FORMAT
 
 
 def can_use_match() -> bool:
-	return sys.version_info >= (3, 10)
+    return sys.version_info >= (3, 10)

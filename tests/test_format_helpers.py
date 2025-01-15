@@ -27,11 +27,11 @@ jsonc_content = '''// Comment
         (jsonc_content, False),  # JSONC content should also return False
     ])
 def test_is_json(mocker, file_content, expected_result):
-	# Mock opening a file and returning the file_content
-	mocker.patch("builtins.open", mock_open(read_data=file_content))
+    # Mock opening a file and returning the file_content
+    mocker.patch("builtins.open", mock_open(read_data=file_content))
 
-	# Call is_json function with a mock file path
-	assert is_json("mock_file.json") == expected_result
+    # Call is_json function with a mock file path
+    assert is_json("mock_file.json") == expected_result
 
 
 # Test for `get_format`
@@ -44,8 +44,8 @@ def test_is_json(mocker, file_content, expected_result):
         (jsonc_content, "jsonc"),  # JSONC content should return "jsonc"
     ])
 def test_get_format(mocker, file_content, expected_format):
-	# Mock opening a file and returning the file_content
-	mocker.patch("builtins.open", mock_open(read_data=file_content))
+    # Mock opening a file and returning the file_content
+    mocker.patch("builtins.open", mock_open(read_data=file_content))
 
-	# Call get_format function with a mock file path
-	assert get_format("mock_file.json") == expected_format
+    # Call get_format function with a mock file path
+    assert get_format("mock_file.json") == expected_format

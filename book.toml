@@ -1,5 +1,5 @@
 [book]
-authors = ["Greg Bowne","Borna Šoštarić"]
+authors = ["Greg Bowne", "Borna Šoštarić"]
 language = "en"
 multilingual = false
 src = "docs"
