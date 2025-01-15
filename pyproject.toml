@@ -15,7 +15,7 @@ classifiers = [
 	"Operating System :: OS Independent",
 ]
 dependencies = ["click"]
-scripts = { jsonmaestro = "jsonmaestro.apps.cli:main", jm-cli = "jsonmaestro.apps.cli:main", jm-convert = "jsonmaestro.apps.converter:main" }
+scripts = { jsonmaestro = "jsonmaestro.app_cli:main", jm-cli = "jsonmaestro.app_cli:main", jm-convert = "jsonmaestro.app_converter:main" }
 
 [project.urls]
 Homepage = "https://github.com/gbowne1/json-maestro"

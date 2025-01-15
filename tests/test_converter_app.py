@@ -7,7 +7,7 @@ from typing import Dict, List
 
 from click.testing import CliRunner
 
-from jsonmaestro.apps.converter import read_input, read_file_input, main
+from jsonmaestro.app_converter import read_input, read_file_input, main
 
 
 def test_read_input():
