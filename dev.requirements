@@ -8,3 +8,4 @@ pyright
 pylance
 debugpy
 setuptools
+build
