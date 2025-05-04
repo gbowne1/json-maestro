@@ -2,7 +2,7 @@ name: ci
 
 on:
     push:
-        branches: ["master"]
+        branches: ["master", "refactor", "refactor-*", "refactor/*"]
         paths:
             [
                 "src/**",
@@ -12,7 +12,7 @@ on:
                 "dev.requirements",
             ]
     pull_request:
-        branches: ["master"]
+        branches: ["master", "refactor", "refactor-*", "refactor/*"]
         paths:
             [
                 "src/**",
