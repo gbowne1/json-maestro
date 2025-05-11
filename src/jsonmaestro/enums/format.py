@@ -4,7 +4,7 @@ from typing import List
 from jsonmaestro.errors import InvalidArgument
 
 
-class Fromat(Enum):
+class Format(Enum):
     eNone = 0
     eJson = 1
     eJsonWithCommnets = 2
@@ -26,15 +26,15 @@ class Fromat(Enum):
         for item in cls:
             if item.value == value:
                 return item.name
-        raise InvalidArgument(f'Invalid value for Fromat: {value}')
+        raise InvalidArgument(f'Invalid value for Format: {value}')
 
     @classmethod
     def values(cls) -> List[int]:
         return [item.value for item in cls]
 
     @classmethod
-    def from_value(cls, value: int) -> 'Fromat':
+    def from_value(cls, value: int) -> 'Format':
         for item in cls:
             if item.value == value:
                 return item
-        raise InvalidArgument(f'Invalid value for Fromat: {value}')
+        raise InvalidArgument(f'Invalid value for Format: {value}')

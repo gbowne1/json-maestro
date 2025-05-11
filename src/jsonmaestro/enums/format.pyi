@@ -2,7 +2,7 @@ from enum import Enum
 from typing import List
 
 
-class Fromat(Enum):
+class Format(Enum):
     eNone = 0
     eJson = 1
     eJsonWithCommnets = 2
@@ -28,5 +28,5 @@ class Fromat(Enum):
         ...
 
     @classmethod
-    def from_value(cls, value: int) -> 'Fromat':
+    def from_value(cls, value: int) -> 'Format':
         ...
